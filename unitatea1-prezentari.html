@@ -144,6 +144,45 @@
   .game-done{ text-align:center; }
   .game-done .big{ font-size:2.4rem; }
 
+  /* ---------------- QUIZ EVALUARE ---------------- */
+  .quiz-wrap{
+    background: var(--card); border:1px solid var(--line); border-radius: var(--radius-l);
+    padding: 28px; box-shadow: var(--shadow-card);
+  }
+  .quiz-top{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom: 18px;}
+  .quiz-score{ font-family:'Baloo 2',sans-serif; font-weight:700; color: var(--teal-dark); font-size:1.05rem; }
+  .quiz-stage{ min-height: 280px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; }
+  .q-card{
+    max-width: 640px; width:100%; background: var(--paper); border:2px solid var(--line);
+    border-radius: var(--radius-m); padding: 22px 24px; text-align:center;
+    font-family:'Baloo 2',sans-serif; font-size:1.12rem; color: var(--ink); font-weight:600;
+    box-shadow: 0 10px 24px -14px rgba(0,0,0,.22);
+  }
+  .q-type{ font-size:.78rem; font-weight:700; color: var(--amber-dark); background: var(--amber-tint);
+    display:inline-block; padding:.2em .7em; border-radius:999px; margin-bottom:10px; }
+  .choice-row{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+  .choice-btn{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.98rem; padding: .75em 1.4em;
+    border-radius: 999px; border:2px solid transparent; cursor:pointer; background: var(--teal-tint); color: var(--teal-dark);
+  }
+  .choice-btn:hover{ background: var(--teal); color:#fff; }
+  .choice-btn.da{ background: var(--teal-tint); border-color:#bfe0d9; }
+  .choice-btn.nu{ background: var(--coral-tint); border-color:#f2c6ba; color: var(--coral-dark); }
+  .choice-btn.nu:hover{ background: var(--coral); color:#fff; }
+  .choice-btn:disabled{ opacity:.7; cursor:default; }
+  .hint-box{
+    max-width:560px; width:100%; font-size:.92rem; color: var(--ink-soft);
+    background: var(--plum-tint); border:1px dashed #cdb7e3; border-radius:12px; padding:12px 16px;
+    display:none; text-align:left;
+  }
+  .hint-box.show{ display:block; }
+  .hint-box b{ color: var(--plum); }
+  .feedback{ min-height:28px; font-family:'Baloo 2',sans-serif; font-weight:700; text-align:center; font-size:1.02rem; }
+  .feedback.ok{ color: var(--teal-dark); }
+  .feedback.bad{ color: var(--coral-dark); }
+  .quiz-done{ text-align:center; }
+  .quiz-done .big{ font-size:2.4rem; }
+
   /* flower / strategies diagram — cleaner circular layout */
   .flower-wrap{ display:flex; justify-content:center; padding: 28px 0 10px; }
   .flower{
@@ -219,6 +258,7 @@
       <a href="#realizare">Realizarea unei prezentări</a>
       <a href="#design">Design</a>
       <a href="#sustinere">Susținere</a>
+      <a href="#evaluare">Evaluare</a>
     </nav>
   </div>
 </div>
@@ -485,8 +525,8 @@
     <span class="kicker">📶 Detaliere</span>
     <h2>Bara de status</h2>
     <p class="sub">Se află în partea de jos a ecranului PowerPoint. Conține informații utile și butoane rapide pentru navigare și setări.</p>
-    <div class="figure" style="overflow-x:auto; padding: 18px 14px;">
-      <img src="assets/bara_status.png" alt="Bara de status PowerPoint cu zonele marcate" style="min-width:900px; width:100%; height:auto; image-rendering:auto;">
+    <div class="figure" style="overflow-x:auto; padding: 18px 14px; background:#fff;">
+      <img src="assets/bara_status_detaliere.png" alt="Bara de status PowerPoint cu zonele marcate de la 1 la 7" style="width:100%; max-width:920px; height:auto; margin:0 auto; display:block;">
     </div>
     <div class="two-col">
       <ul class="legend">
@@ -742,6 +782,27 @@
   </div>
 </section>
 
+<!-- ============================================================ -->
+<!-- 11. EVALUARE / QUIZ -->
+<!-- ============================================================ -->
+<section class="section" id="evaluare">
+  <div class="container">
+    <span class="kicker">📝 Verifică-ți cunoștințele</span>
+    <h2>Evaluare — întrebări din lecție</h2>
+    <p class="sub">Răspunde cu <b>Da / Nu</b> sau alege varianta corectă. La fiecare întrebare poți cere un indiciu. La final vezi scorul.</p>
+
+    <div class="quiz-wrap">
+      <div class="quiz-top">
+        <div class="quiz-score">Scor: <span id="qscore">0</span> / <span id="qtotal">0</span></div>
+        <div class="progress-dots" id="qdots"></div>
+      </div>
+      <div class="quiz-stage" id="qstage">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer class="end">
   <div class="container">
     <h2 style="margin-bottom:10px;">Gata de aplicat!</h2>
@@ -832,6 +893,190 @@
   }
 
   renderQuestion();
+
+  /* ================= QUIZ EVALUARE ================= */
+  const QUIZ = [
+    {
+      type: "tf",
+      text: "Panglica aplicației Microsoft PowerPoint conține o filă numită Încărcare (Load).",
+      answer: false,
+      hint: "Filele principale sunt: Fișier, Pornire, Inserare, Desenare, Proiectare, Tranziții, Animații, Expunere diapozitive, Înregistrare, Revizuire, Vizualizare. Nu există „Încărcare”."
+    },
+    {
+      type: "tf",
+      text: "Pe bara de status apare numărul de diapozitive din prezentare.",
+      answer: true,
+      hint: "În stânga barei de status vezi textul de tipul „Diapozitiv 1 din 5”."
+    },
+    {
+      type: "tf",
+      text: "Notele asociate unui diapozitiv nu sunt văzute de public în timpul expunerii.",
+      answer: true,
+      hint: "Notele vorbitorului apar doar pe ecranul prezentatorului (sau în panoul de note), nu pe proiector."
+    },
+    {
+      type: "mc",
+      text: "Microsoft PowerPoint este:",
+      choices: ["un editor de grafică 3D", "un editor de prezentări electronice", "o aplicație pentru gestionarea fișierelor"],
+      answer: 1,
+      hint: "PowerPoint face parte din Microsoft Office și e dedicat prezentărilor (slide-uri)."
+    },
+    {
+      type: "mc",
+      text: "Extensia unui fișier creat cu PowerPoint poate fi:",
+      choices: ["*.bmp", "*.fla", "*.pptx"],
+      answer: 2,
+      hint: "Fișierele PowerPoint moderne au extensia .pptx (sau .ppt / .pptm)."
+    },
+    {
+      type: "mc",
+      text: "Tasta care se apasă pentru a încheia o expunere de prezentare este:",
+      choices: ["Esc", "F1", "F5", "Delete"],
+      answer: 0,
+      hint: "F5 pornește expunerea de la început; Esc o oprește."
+    },
+    {
+      type: "mc",
+      text: "Pentru a insera în prezentare o imagine, se alege:",
+      choices: ["butonul Imagini din fila Inserare", "butonul WordArt din fila Inserare", "butonul Traducere din fila Revizuire", "butonul Note din fila Vizualizare"],
+      answer: 0,
+      hint: "Tot ce ține de adăugarea de conținut (imagini, tabele, video) se găsește în fila Inserare."
+    },
+    {
+      type: "tf",
+      text: "Un diapozitiv poate conține un sunet.",
+      answer: true,
+      hint: "Din fila Inserare → Audio poți adăuga un sunet existent sau înregistrat."
+    },
+    {
+      type: "tf",
+      text: "Prezentarea poate fi salvată chiar dacă nu are niciun diapozitiv.",
+      answer: true,
+      hint: "Poți salva un fișier PowerPoint gol; diapozitivele se pot adăuga ulterior."
+    },
+    {
+      type: "tf",
+      text: "La crearea sa, o prezentare necompletată are două diapozitive.",
+      answer: false,
+      hint: "O prezentare necompletată începe cu un singur diapozitiv (de titlu)."
+    },
+    {
+      type: "tf",
+      text: "Într-o prezentare, diapozitivele nu pot fi identice.",
+      answer: false,
+      hint: "Poți duplica un diapozitiv (click-dreapta → Dublare diapozitiv) — vor fi identice."
+    },
+    {
+      type: "mc",
+      text: "Animațiile se aplică la:",
+      choices: ["întregul diapozitiv (ca o tranziție)", "obiecte (text, imagine, formă) selectate pe diapozitiv", "doar la fundal"],
+      answer: 1,
+      hint: "Selectezi obiectul, apoi din fila Animații alegi efectul. Tranzițiile, în schimb, se aplică la diapozitiv."
+    },
+    {
+      type: "mc",
+      text: "Tranzițiile se pun:",
+      choices: ["pe fiecare obiect din diapozitiv", "la nivel de diapozitiv (cum trece de la un slide la altul)", "doar pe pagina de titlu"],
+      answer: 1,
+      hint: "Fila Tranziții → alegi efectul pentru diapozitivul curent (sau pentru toate)."
+    },
+    {
+      type: "tf",
+      text: "Pentru o prezentare reușită e bine să avem puțin text pe diapozitiv (maxim ~40 de cuvinte, 6–7 rânduri).",
+      answer: true,
+      hint: "Regula de design: text succint + imagini. Prea mult text face publicul să citească ecranul în loc să asculte."
+    },
+    {
+      type: "tf",
+      text: "Citirea textului de pe diapozitive în timpul susținerii este o practică recomandată.",
+      answer: false,
+      hint: "Prezentatorul vorbește liber, ghidat de slide-uri; citirea de pe ecran pierde legătura cu publicul."
+    }
+  ];
+
+  let qOrder = [...QUIZ]; // păstrăm ordinea logică (sau poți amesteca)
+  let qIdx = 0, qScore = 0;
+
+  const qStage = document.getElementById('qstage');
+  const qScoreEl = document.getElementById('qscore');
+  const qTotalEl = document.getElementById('qtotal');
+  const qDotsEl = document.getElementById('qdots');
+  qTotalEl.textContent = qOrder.length;
+
+  function renderQDots(){
+    qDotsEl.innerHTML = qOrder.map((_,i) => `<span class="${i < qIdx ? 'done':''}"></span>`).join('');
+  }
+
+  function showHint(){
+    const box = document.getElementById('hintbox');
+    if(box) box.classList.add('show');
+  }
+
+  function renderQuiz(){
+    if(qIdx >= qOrder.length){
+      qStage.innerHTML = `
+        <div class="quiz-done">
+          <div class="big">🏆</div>
+          <h3>Evaluare terminată!</h3>
+          <p>Scor final: <b>${qScore} din ${qOrder.length}</b></p>
+          <p style="color:var(--ink-soft);font-size:.95rem;">${qScore >= qOrder.length * 0.8 ? 'Excelent! Ai stăpânit lecția.' : qScore >= qOrder.length * 0.5 ? 'Bine! Mai reia secțiunile unde ai greșit.' : 'Reia lecția și încearcă din nou.'}</p>
+          <button class="btn amber" onclick="restartQuiz()">Reîncepe evaluarea</button>
+        </div>`;
+      return;
+    }
+    const q = qOrder[qIdx];
+    let choicesHtml = '';
+    if(q.type === 'tf'){
+      choicesHtml = `
+        <button class="choice-btn da" onclick="answerQuiz(true)">✅ Da</button>
+        <button class="choice-btn nu" onclick="answerQuiz(false)">❌ Nu</button>`;
+    } else {
+      choicesHtml = q.choices.map((c,i) =>
+        `<button class="choice-btn" onclick="answerQuiz(${i})">${String.fromCharCode(97+i)}) ${c}</button>`
+      ).join('');
+    }
+    qStage.innerHTML = `
+      <div class="q-card">
+        <div class="q-type">${q.type === 'tf' ? 'Adevărat / Fals' : 'Alege răspunsul corect'}</div>
+        <div>${q.text}</div>
+      </div>
+      <div class="choice-row">${choicesHtml}</div>
+      <button class="btn ghost" style="font-size:.9rem;padding:.5em 1.1em;" onclick="showHint()">💡 Indiciu</button>
+      <div class="hint-box" id="hintbox"><b>Indiciu:</b> ${q.hint}</div>
+      <div class="feedback" id="qfeedback"></div>
+    `;
+    renderQDots();
+  }
+
+  window.answerQuiz = function(choice){
+    const q = qOrder[qIdx];
+    const fb = document.getElementById('qfeedback');
+    const correct = choice === q.answer;
+    if(correct){ qScore++; qScoreEl.textContent = qScore; }
+    let msg = correct ? "✅ Corect! Bravo!" : "✖ Nu e corect.";
+    if(!correct){
+      if(q.type === 'tf'){
+        msg += ` Răspunsul corect era: <b>${q.answer ? 'Da' : 'Nu'}</b>.`;
+      } else {
+        msg += ` Răspunsul corect era: <b>${String.fromCharCode(97+q.answer)}) ${q.choices[q.answer]}</b>.`;
+      }
+    }
+    fb.innerHTML = msg;
+    fb.className = 'feedback ' + (correct ? 'ok' : 'bad');
+    document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+    const hintBtn = qStage.querySelector('.btn.ghost');
+    if(hintBtn) hintBtn.disabled = true;
+    setTimeout(() => { qIdx++; renderQuiz(); }, 1600);
+  }
+
+  window.restartQuiz = function(){
+    qIdx = 0; qScore = 0; qScoreEl.textContent = 0;
+    renderQuiz();
+  }
+
+  window.showHint = showHint;
+
+  renderQuiz();
 </script>
 </body>
 </html>
