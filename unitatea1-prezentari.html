@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unitatea 1 — Prezentări | Informatică, clasa a VI-a</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(250,246,236,.92); backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .row{ display:flex; align-items:center; gap:18px; padding: 12px clamp(18px,4vw,48px); }
+  .topbar a.back{ font-family:'Baloo 2',sans-serif; font-weight:600; color:var(--teal); text-decoration:none; white-space:nowrap; display:flex; gap:.4em; align-items:center; }
+  .toc{ display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; }
+  .toc::-webkit-scrollbar{ display:none; }
+  .toc a{
+    font-family:'Baloo 2',sans-serif; font-size:.85rem; font-weight:600; white-space:nowrap;
+    padding: .5em 1em; border-radius:999px; text-decoration:none; color: var(--ink-soft);
+  }
+  .toc a.active, .toc a:hover{ background: var(--teal); color:#fff; }
+
+  /* ---------- hero ---------- */
+  .lesson-hero{
+    background: linear-gradient(180deg, var(--teal-dark), var(--teal));
+    color:#fff; padding: 54px 0 70px;
+  }
+  .lesson-hero .eyebrow{ font-family:'Baloo 2',sans-serif; color:#cdeee8; margin-bottom:10px; font-weight:600;}
+  .lesson-hero h1{ color:#fff; font-size: clamp(1.9rem, 4.4vw, 3rem); max-width: 22ch; }
+  .lesson-hero p{ color:#e2f4f0; max-width:60ch; margin-top:14px; font-size:1.06rem; }
+
+  /* ---------- generic section ---------- */
+  .section{ padding: 64px 0; border-bottom: 1px solid var(--line); }
+  .section.tint{ background: var(--paper-deep); }
+  .section > .container > .kicker{
+    display:inline-flex; align-items:center; gap:.5em;
+    font-family:'Baloo 2',sans-serif; font-weight:700; color: var(--amber-dark);
+    background: var(--amber-tint); padding:.35em 1em; border-radius:999px; font-size:.82rem;
+    margin-bottom: 16px;
+  }
+  .section h2{ font-size: clamp(1.5rem, 3vw, 2.1rem); max-width: 22ch; margin-bottom: 10px;}
+  .section .sub{ color: var(--ink-soft); font-size: 1.05rem; max-width: 62ch; margin-bottom: 30px;}
+
+  .two-col{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 34px; align-items:start; }
+  @media (max-width: 820px){ .two-col{ grid-template-columns: 1fr; } }
+
+  .three-col{ display:grid; grid-template-columns: repeat(3,1fr); gap:20px; }
+  @media (max-width: 820px){ .three-col{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px){ .three-col{ grid-template-columns: 1fr; } }
+
+  .mini-card{
+    background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+    padding: 18px; text-align:center; box-shadow: var(--shadow-card);
+  }
+  .mini-card img{ height:140px; object-fit:contain; margin: 0 auto 12px; }
+  .mini-card h4{ font-size:1.02rem; color:var(--teal-dark); margin-bottom:6px; }
+  .mini-card p{ font-size:.88rem; color:var(--ink-soft); margin:0; }
+
+  ul.check{ list-style:none; margin:0 0 1em; padding:0; }
+  ul.check li{ position:relative; padding-left:1.7em; margin-bottom:.7em; line-height:1.55; }
+  ul.check li::before{ content:"✓"; position:absolute; left:0; top:0; color: var(--teal); font-weight:700; }
+
+  ol.steps{ margin:0 0 1em; padding-left: 1.2em; }
+  ol.steps li{ margin-bottom:.6em; line-height:1.6; }
+  ol.steps li b{ color: var(--teal-dark); }
+
+  .callout-num{
+    display:flex; gap:14px; align-items:flex-start; margin-bottom:18px;
+  }
+  .callout-num .n{
+    flex:none; width:30px;height:30px;border-radius:50%; background:var(--teal); color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:.9rem;
+  }
+  .callout-num p{ margin:0; }
+
+  /* legend list next to screenshot */
+  .legend{ list-style:none; margin:0; padding:0; }
+  .legend li{
+    display:flex; gap:12px; margin-bottom:14px; align-items:flex-start;
+  }
+  .legend .tag{
+    flex:none; width:26px;height:26px;border-radius:50%; background: var(--teal); color:#fff;
+    font-family:'Baloo 2',sans-serif; font-size:.82rem; font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .legend b{ color: var(--teal-dark); }
+
+  /* ribbon tab walk-through */
+  .tabwalk{ display:flex; flex-direction:column; gap:26px; }
+  .tabwalk .item{
+    background: var(--card); border:1px solid var(--line); border-radius: var(--radius-m);
+    padding: 16px 18px; box-shadow: var(--shadow-card);
+  }
+  .tabwalk .item .name{
+    font-family:'Baloo 2',sans-serif; color:#fff; background:var(--teal); display:inline-block;
+    padding:.25em .9em; border-radius:8px; font-size:.92rem; margin-bottom:10px;
+  }
+  .tabwalk .item img{ border-radius:8px; border:1px solid var(--line); margin-bottom:10px; }
+  .tabwalk .item p{ margin:0; font-size:.94rem; color: var(--ink-soft); }
+
+  /* app badges */
+  .apps{ display:flex; flex-wrap:wrap; gap:12px; margin: 18px 0; }
+  .apps span{
+    font-family:'Baloo 2',sans-serif; font-weight:600; font-size:.92rem;
+    background:#fff; border:1px solid var(--line); padding:.55em 1.1em; border-radius:999px;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* ---------------- GAME ---------------- */
+  .game-wrap{
+    background: var(--card); border:1px solid var(--line); border-radius: var(--radius-l);
+    padding: 30px; box-shadow: var(--shadow-card);
+  }
+  .game-top{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom: 20px;}
+  .game-score{ font-family:'Baloo 2',sans-serif; font-weight:700; color: var(--teal-dark); font-size:1.05rem; }
+  .card-stage{ display:flex; flex-direction:column; align-items:center; gap:22px; min-height: 260px; justify-content:center; }
+  .stmt-card{
+    max-width: 520px; width:100%; background: var(--paper); border:2px solid var(--line);
+    border-radius: var(--radius-m); padding: 26px 28px; text-align:center;
+    font-family:'Baloo 2',sans-serif; font-size:1.15rem; color: var(--ink); font-weight:600;
+    box-shadow: 0 10px 24px -14px rgba(0,0,0,.25);
+  }
+  .choice-row{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+  .choice-btn{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:1rem; padding: .9em 1.8em;
+    border-radius: 999px; border:2px solid transparent; cursor:pointer;
+  }
+  .choice-btn.electronic{ background: var(--teal-tint); color: var(--teal-dark); border-color:#bfe0d9; }
+  .choice-btn.electronic:hover{ background: var(--teal); color:#fff; }
+  .choice-btn.paper{ background: var(--amber-tint); color: var(--amber-dark); border-color:#f0d6a8; }
+  .choice-btn.paper:hover{ background: var(--amber); color:#fff; }
+  .feedback{
+    min-height: 30px; font-family:'Baloo 2',sans-serif; font-weight:700; text-align:center; font-size:1.02rem;
+  }
+  .feedback.ok{ color: var(--teal-dark); }
+  .feedback.bad{ color: var(--coral-dark); }
+  .game-controls{ display:flex; justify-content:center; gap:12px; margin-top:6px; }
+  .progress-dots{ display:flex; gap:6px; justify-content:center; margin-top:6px; }
+  .progress-dots span{ width:8px;height:8px;border-radius:50%; background:var(--line); }
+  .progress-dots span.done{ background: var(--teal); }
+  .game-done{ text-align:center; }
+  .game-done .big{ font-size:2.4rem; }
+
+  /* flower / strategies diagram — cleaner circular layout */
+  .flower-wrap{ display:flex; justify-content:center; padding: 28px 0 10px; }
+  .flower{
+    position: relative; width: min(480px, 90vw); aspect-ratio: 1/1;
+  }
+  .flower .center{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width: 38%; height:38%; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #ffe9b0, var(--amber) 72%);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    color:#7a3e00; font-family:'Baloo 2',sans-serif; font-weight:700;
+    font-size: clamp(.72rem,1.7vw,.92rem); line-height:1.25;
+    padding: 12px; box-shadow: 0 8px 22px -6px rgba(0,0,0,.35); z-index:5;
+    border: 3px solid #fff;
+  }
+  .flower .petal{
+    position:absolute; width: 28%; height: 28%;
+    left:50%; top:50%;
+    margin-left: -14%; margin-top: -14%;
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:'Baloo 2',sans-serif; font-weight:700;
+    text-align:center; font-size: clamp(.58rem,1.4vw,.78rem); line-height:1.2;
+    box-shadow: 0 4px 14px -4px rgba(0,0,0,.3);
+    border: 2px solid rgba(255,255,255,.35);
+    z-index:2;
+  }
+  .flower .petal span{ padding: .2em .35em; }
+  /* 8 petals evenly around the center (radius ~ 38%) */
+  .p1{ background:#3aa0c9; transform: translate(0, -135%); }
+  .p2{ background:#1f9d63; transform: rotate(45deg) translate(0, -135%) rotate(-45deg); }
+  .p3{ background:#c23fa0; transform: rotate(90deg) translate(0, -135%) rotate(-90deg); }
+  .p4{ background:#6b6fc4; transform: rotate(135deg) translate(0, -135%) rotate(-135deg); }
+  .p5{ background:#8a5a2e; transform: rotate(180deg) translate(0, -135%) rotate(-180deg); }
+  .p6{ background:#1c8f7b; transform: rotate(225deg) translate(0, -135%) rotate(-225deg); }
+  .p7{ background:#b3283b; transform: rotate(270deg) translate(0, -135%) rotate(-270deg); }
+  .p8{ background:#c9a227; transform: rotate(315deg) translate(0, -135%) rotate(-315deg); }
+
+  @media (max-width: 520px){
+    .flower{ width: min(360px, 94vw); }
+    .flower .petal{ font-size: .62rem; }
+  }
+
+  /* mistakes list */
+  .mistake{
+    display:flex; gap:16px; align-items:flex-start; margin-bottom: 22px;
+  }
+  .mistake .no{
+    flex:none; width:38px;height:38px;border-radius:10px; background: var(--coral); color:#fff;
+    font-family:'Baloo 2',sans-serif; font-weight:800; display:flex;align-items:center;justify-content:center;
+  }
+  .mistake h4{ color: var(--coral-dark); margin-bottom:4px; font-size:1.05rem; }
+  .mistake p{ margin:0; color: var(--ink-soft); font-size:.95rem; }
+
+  footer.end{
+    padding: 50px 0 70px; text-align:center;
+  }
+  footer.end .btn{ margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="row">
+    <a class="back" href="index.html">← Acasă</a>
+    <nav class="toc" id="toc">
+      <a href="#intro">Ce e o prezentare</a>
+      <a href="#joc">Joc recapitulare</a>
+      <a href="#powerpoint">PowerPoint</a>
+      <a href="#pornire">Pornire &amp; interfață</a>
+      <a href="#panglica">Panglica</a>
+      <a href="#status">Bara de status</a>
+      <a href="#realizare">Realizarea unei prezentări</a>
+      <a href="#design">Design</a>
+      <a href="#sustinere">Susținere</a>
+    </nav>
+  </div>
+</div>
+
+<header class="lesson-hero">
+  <div class="container">
+    <div class="eyebrow">Unitatea 1 · Clasa a VI-a</div>
+    <h1>Prezentări electronice &amp; Microsoft PowerPoint</h1>
+    <p>De la retroproiector la slide-uri animate: învățăm ce este o prezentare, cum arată PowerPoint pe dinăuntru și cum construim și susținem o prezentare care chiar are impact la public.</p>
+  </div>
+</header>
+
+<!-- ============================================================ -->
+<!-- 1. CE ESTE O PREZENTARE -->
+<!-- ============================================================ -->
+<section class="section" id="intro">
+  <div class="container">
+    <span class="kicker">🔎 Descoperă</span>
+    <h2>Ce este, de fapt, o prezentare?</h2>
+    <p class="sub">În fiecare zi transmitem idei celor din jur — la școală, acasă, în proiecte. O prezentare este modul organizat prin care facem asta cât mai clar posibil.</p>
+
+    <div class="retine">
+      <div class="tag">✅ Reține</div>
+      <p><b>Prezentarea</b> este o expunere pe scurt a unor informații legate de o anumită temă, organizată după un plan stabilit anterior. Pentru ca informațiile să fie bine înțelese și reținute, modalitatea de prezentare trebuie să fie <b>vizuală</b>: informație sintetizată și organizată grafic, cu imagini și text.</p>
+    </div>
+
+    <h3 style="margin: 30px 0 6px;">Trei feluri de a prezenta o idee</h3>
+    <p class="sub" style="margin-bottom:20px;">Înainte de PowerPoint, oamenii foloseau alte instrumente — unele încă apar și azi în școli sau firme. Iată cum funcționează fiecare și când e utilă.</p>
+
+    <div class="three-col">
+      <div class="mini-card">
+        <img src="assets/retroproiector.png" alt="Retroproiector folosit pentru prezentări pe folii transparente">
+        <h4>1. Pe folii transparente</h4>
+        <p>Informația se scrie sau se tipărește pe <b>folii transparente</b> (acetate). Fiecare folie se așază pe sticla unui <b>retroproiector</b> — o lampă puternică proiectează imaginea pe un ecran aflat de obicei în spatele prezentatorului. Avantaje: ușor de pregătit, ieftin. Dezavantaje: greu de actualizat, fără animații sau sunet, trebuie să schimbi manual fiecare folie.</p>
+      </div>
+      <div class="mini-card">
+        <img src="assets/flipchart.png" alt="Flipchart / șevalet rotativ folosit pentru prezentări pe hârtie">
+        <h4>2. Pe hârtie (flipchart)</h4>
+        <p>Informația e pregătită pe <b>foi mari</b> (tipărite sau scrise de mână), fixate pe un suport numit <b>șevalet rotafoliu</b> (flipchart). Prezentatorul răsfoiește foile pe măsură ce avansează. Avantaje: nu are nevoie de curent, publicul poate vedea totul de aproape. Dezavantaje: greu de transportat, spațiu limitat pe pagină, nu se pot actualiza ușor.</p>
+      </div>
+      <div class="mini-card">
+        <img src="assets/videoproiector.png" alt="Videoproiector folosit pentru prezentări electronice">
+        <h4>3. Electronice</h4>
+        <p>Se creează cu o <b>aplicație de prezentare</b> (PowerPoint, Keynote, Google Slides etc.) pe calculator, tabletă sau telefon. Se afișează pe ecranul dispozitivului sau se proiectează cu un <b>videoproiector</b> / ecran mare. Avantaje: animații, sunet, video, hiperlinkuri, actualizare rapidă, note pentru vorbitor. Dezavantaje: depinde de echipamente și de energie electrică.</p>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:40px;">
+      <div>
+        <h3 style="margin-bottom:10px;">De ce câștigă prezentarea electronică?</h3>
+        <p class="sub" style="margin-bottom:14px;">Prin complexitatea ei, are cel mai bun impact la public. E organizată ca o înlănțuire de imagini numite <b>diapozitive</b> (slide-uri), fiecare afișând treptat informația.</p>
+        <ul class="check">
+          <li>Poate conține text, imagini, sunete, animații, efecte, filmulețe și hiperlinkuri către pagini web sau documente.</li>
+          <li>Diapozitivele se pot actualiza ușor, oricând.</li>
+          <li>Poți adăuga <b>note ale vorbitorului</b> — text vizibil doar pentru prezentator, nu pentru public.</li>
+          <li>Diapozitivele pot fi tipărite pe hârtie pentru participanți (<b>handouts</b>) sau chiar pe folii transparente.</li>
+        </ul>
+      </div>
+      <div class="retine" style="margin-top:0;">
+        <div class="tag">🛠️ O prezentare electronică are 2 etape</div>
+        <ol class="steps">
+          <li><b>Proiectarea</b> — realizarea prezentării într-o aplicație de prezentare.</li>
+          <li><b>Susținerea</b> — expunerea prezentării în fața publicului (auditoriului).</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 2. JOC DE RECAPITULARE -->
+<!-- ============================================================ -->
+<section class="section tint" id="joc">
+  <div class="container">
+    <span class="kicker">🎮 Joc de recapitulare</span>
+    <h2>Electronică sau pe hârtie?</h2>
+    <p class="sub">Citește afirmația de pe carte și decide: descrie o prezentare <b>electronică</b> sau una <b>pe hârtie</b>? Discutați împreună de ce ați ales fiecare variantă!</p>
+
+    <div class="game-wrap">
+      <div class="game-top">
+        <div class="game-score">Scor: <span id="score">0</span> / <span id="total">0</span></div>
+        <div class="progress-dots" id="dots"></div>
+      </div>
+      <div class="card-stage" id="stage">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3. MICROSOFT POWERPOINT -->
+<!-- ============================================================ -->
+<section class="section" id="powerpoint">
+  <div class="container">
+    <span class="kicker">💡 Reține</span>
+    <h2>Microsoft PowerPoint</h2>
+    <div class="two-col">
+      <div>
+        <p><b>Microsoft PowerPoint</b> este o componentă a pachetului Microsoft Office, dedicată realizării și expunerii prezentărilor electronice. Din punctul de vedere al aplicației, o prezentare electronică este un document salvat într-un fișier cu extensia <b>.pptx</b>, <b>.ppt</b> sau <b>.pptm</b>.</p>
+
+        <div class="info-fapt"><strong>Știai că?</strong> Prima versiune a PowerPoint a fost lansată în 1987 pentru Apple Macintosh, de compania Forethought, Inc. Era alb-negru și genera pagini fără transparențe!</div>
+
+        <h3 style="margin: 24px 0 10px;">PowerPoint nu e singura opțiune</h3>
+        <p class="sub" style="margin-bottom: 10px;">Există mai multe aplicații dedicate prezentărilor electronice:</p>
+        <div class="apps">
+          <span>🟠 MS PowerPoint — Microsoft</span>
+          <span>⌨️ Keynote — Apple</span>
+          <span>🔵 Prezi — Prezi Inc.</span>
+          <span>🟢 LibreOffice Impress — gratuit</span>
+          <span>🟡 Google Slides — gratuit, online</span>
+        </div>
+      </div>
+      <figure class="figure">
+        <img src="assets/laptop_powerpoint.png" alt="Laptop cu aplicația PowerPoint deschisă">
+        <figcaption>O aplicație de prezentare conține <b>un editor</b> pentru crearea diapozitivelor (text, imagini, sunete, animații) și <b>un sistem de redare</b> a lor, în ordinea proiectată.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 4. PORNIREA APLICAȚIEI + INTERFAȚA -->
+<!-- ============================================================ -->
+<section class="section tint" id="pornire">
+  <div class="container">
+    <span class="kicker">🖱️ Pornirea aplicației</span>
+    <h2>Pornirea aplicației Microsoft PowerPoint</h2>
+    <p class="sub">Lansarea în execuție se face din meniul <b>Start</b>, accesând <i>All Apps → PowerPoint</i>, sau tastând „PowerPoint" și apăsând <b>Enter</b>.</p>
+
+    <p>Aplicația se deschide cu un ecran de start, de unde poți alege:</p>
+    <div class="callout-num"><div class="n">1</div><p>crearea unei <b>prezentări noi, necompletate</b> — se alege „Prezentare necompletată”;</p></div>
+    <div class="callout-num"><div class="n">2</div><p>crearea unei prezentări noi folosind un <b>șablon predefinit</b>;</p></div>
+    <div class="callout-num"><div class="n">3</div><p><b>deschiderea</b> unei prezentări realizate anterior, din lista propusă.</p></div>
+
+    <h3 style="margin: 34px 0 14px;">Fereastra de interfață</h3>
+    <div class="figure">
+      <img src="assets/interfata_completa.png" alt="Fereastra interfeței PowerPoint cu bara de titlu, panglică, panou de miniaturi, panou diapozitiv, panou de note și bară de status marcate cu numere">
+    </div>
+
+    <div class="two-col">
+      <ul class="legend">
+        <li><span class="tag">1</span><div><b>Bara de titlu</b> (Title bar)</div></li>
+        <li><span class="tag">2</span><div><b>Panglica</b> (Ribbon)</div></li>
+        <li><span class="tag">3</span><div><b>Bara de status</b> (Status bar)</div></li>
+      </ul>
+      <ul class="legend">
+        <li><span class="tag">4</span><div><b>Panoul de miniaturi</b> — miniaturi ale fiecărui diapozitiv; selectarea uneia îl afișează în panoul diapozitiv.</div></li>
+        <li><span class="tag">5</span><div><b>Panoul de note</b> — notele adăugate pentru diapozitivul curent; publicul nu le vede.</div></li>
+        <li><span class="tag">6</span><div><b>Panoul diapozitiv</b> — zona de editare a diapozitivului curent.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 5. BARA DE TITLU -->
+<!-- ============================================================ -->
+<section class="section" id="bara-titlu">
+  <div class="container">
+    <span class="kicker">🔍 Detaliere</span>
+    <h2>Bara de titlu</h2>
+    <div class="figure">
+      <img src="assets/bara_titlu.png" alt="Bara de titlu PowerPoint cu elementele numerotate de la 1 la 6">
+    </div>
+    <div class="two-col">
+      <ul class="legend">
+        <li><span class="tag">1</span><div><b>Bara de acces rapid</b> — Salvare (Ctrl+S), Anulare tastare (Ctrl+Z), Repetare tastare (Ctrl+Y), Porniți de la început (F5). Se pot adăuga și alte comenzi.</div></li>
+        <li><span class="tag">2</span><div><b>Numele fișierului</b> aflat în lucru.</div></li>
+        <li><span class="tag">3</span><div><b>Căutare Microsoft</b> (Alt+G) — găsește rapid text, comenzi sau informații.</div></li>
+      </ul>
+      <ul class="legend">
+        <li><span class="tag">4</span><div><b>Contul de utilizator</b> Office.</div></li>
+        <li><span class="tag">5</span><div><b>Opțiunile de afișare a panglicii</b> — ascunde/afișează panglica, filele, comenzile.</div></li>
+        <li><span class="tag">6</span><div><b>Panoul de management al ferestrei</b> — minimizare / restaurare / maximizare.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 6. PANGLICA -->
+<!-- ============================================================ -->
+<section class="section tint" id="panglica">
+  <div class="container">
+    <span class="kicker">🎗️ Detaliere</span>
+    <h2>Panglica (Ribbon)</h2>
+    <p class="sub">Panglica adună meniurile și comenzile aplicației, organizate pe file (Tabs), pe tipuri de activități.</p>
+    <div class="figure">
+      <img src="assets/panglica_detaliu.png" alt="Panglica PowerPoint cu grupuri de comenzi, comenzi individuale și galerii marcate cu 1, 2, 3">
+    </div>
+    <ul class="legend" style="margin-bottom: 10px;">
+      <li><span class="tag">1</span><div><b>Grupuri logice de comenzi</b> — unele au o săgeată în dreapta jos, cu mai multe opțiuni.</div></li>
+      <li><span class="tag">2</span><div><b>Comenzi (butoane) individuale.</b></div></li>
+      <li><span class="tag">3</span><div><b>Galerii cu instrumente</b> pentru mai multe opțiuni vizuale.</div></li>
+    </ul>
+
+    <h3 style="margin: 36px 0 16px;">O plimbare prin file</h3>
+    <div class="tabwalk">
+      <div class="item">
+        <span class="name">Fișier</span>
+        <img src="assets/backstage.png" alt="Fila Fișier - vizualizarea Backstage cu Informații, Salvare, Salvare ca, Imprimare" style="max-width:280px;">
+        <p>Comenzi pentru fișierul prezentare: creare, deschidere, salvare, export, partajare, tipărire, opțiuni. Deschide o vizualizare specială, numită <b>Backstage</b>.</p>
+      </div>
+      <div class="item">
+        <span class="name">Pornire</span>
+        <img src="assets/fila_pornire.png" alt="Fila Pornire cu grupurile Clipboard, Diapozitive, Font, Paragraf, Desen, Editare">
+        <p>Comenzi de bază: lipire, diapozitiv nou, formatare font și paragraf, forme simple, găsire/înlocuire. E fila pe care o folosești cel mai des când editezi conținutul.</p>
+      </div>
+      <div class="item">
+        <span class="name">Inserare</span>
+        <img src="assets/fila_inserare.png" alt="Fila Inserare cu Diapozitive, Tabele, Imagini, Ilustrații, Linkuri, Comentarii, Text, Media">
+        <p>Adaugi conținut pe diapozitiv: tabele, imagini, forme, SmartArt, diagrame, linkuri, casete de text, WordArt, sunet și video.</p>
+      </div>
+      <div class="item">
+        <span class="name">Desenare</span>
+        <img src="assets/fila_desenare.png" alt="Fila Desenare cu instrumente de desen și cerneală digitală">
+        <p>Instrumente de desen (creion, marker, evidențiator) și „cerneală digitală”. Pe tablete sau ecrane tactile poți desena cu degetul sau creionul digital.</p>
+      </div>
+      <div class="item">
+        <span class="name">Proiectare</span>
+        <img src="assets/fila_proiectare.png" alt="Fila Proiectare cu teme, variante și dimensiune diapozitiv">
+        <p>Aici alegi <b>tema</b> (culori + fonturi + efecte), variantele de culoare, dimensiunea diapozitivului și formatarea fundalului. (În engleză: Design)</p>
+      </div>
+      <div class="item">
+        <span class="name">Tranziții</span>
+        <img src="assets/fila_tranzitii.png" alt="Fila Tranziții cu diverse efecte de tranziție și temporizare">
+        <p>Stabilește cum trece un diapozitiv la următorul (efecte de tranziție, durată, sunet). Poți aplica același efect la toată prezentarea.</p>
+      </div>
+      <div class="item">
+        <span class="name">Animații</span>
+        <img src="assets/fila_animatii.png" alt="Fila Animații cu efecte de animație și panou de animație">
+        <p>Animezi obiectele de pe diapozitiv (apariție, mișcare, dispariție). Se selectează obiectul, apoi se alege efectul și se reglează temporizarea.</p>
+      </div>
+      <div class="item">
+        <span class="name">Expunere diapozitive</span>
+        <img src="assets/fila_expunere.png" alt="Fila Expunere diapozitive cu opțiuni de pornire și monitorizare">
+        <p>Pornește expunerea (de la început sau de la diapozitivul curent), configurează monitorul prezentatorului, temporizatoarele și opțiunile de redare.</p>
+      </div>
+      <div class="item">
+        <span class="name">Înregistrare</span>
+        <img src="assets/fila_inregistrare.png" alt="Fila Înregistrare cu opțiuni de captură ecran și export video">
+        <p>Înregistrezi narațiunea, captura de ecran sau exporti prezentarea ca video / fișier de expunere (.ppsx).</p>
+      </div>
+      <div class="item">
+        <span class="name">Revizuire</span>
+        <img src="assets/fila_revizuire.png" alt="Fila Revizuire cu verificare ortografică, comentarii și comparare">
+        <p>Verificare ortografică, accesibilitate, comentarii, traducere și comparare între două versiuni ale prezentării.</p>
+      </div>
+      <div class="item">
+        <span class="name">Vizualizare</span>
+        <img src="assets/fila_vizualizare.png" alt="Fila Vizualizare cu moduri Normal, Sortare diapozitive, Pagină de note, Vizualizare de citire">
+        <p>Schimbă modul de vizualizare: Normal, Sortare diapozitive, Pagină de note, Vizualizare citire; afișează rigla, ghidajele, zoom.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 7. BARA DE STATUS -->
+<!-- ============================================================ -->
+<section class="section" id="status">
+  <div class="container">
+    <span class="kicker">📶 Detaliere</span>
+    <h2>Bara de status</h2>
+    <p class="sub">Se află în partea de jos a ecranului PowerPoint. Conține informații utile și butoane rapide pentru navigare și setări.</p>
+    <div class="figure" style="overflow-x:auto; padding: 18px 14px;">
+      <img src="assets/bara_status.png" alt="Bara de status PowerPoint cu zonele marcate" style="min-width:900px; width:100%; height:auto; image-rendering:auto;">
+    </div>
+    <div class="two-col">
+      <ul class="legend">
+        <li><span class="tag">1</span><div>Zona de <b>afișare a numărului de diapozitive</b> și a diapozitivului curent (ex.: „Diapozitiv 1 din 1”).</div></li>
+        <li><span class="tag">2</span><div>Zona de <b>configurare a limbii</b> în care e redactată prezentarea (ex.: Română).</div></li>
+        <li><span class="tag">3</span><div>Buton pentru <b>analiza accesibilității</b> — recomandări pentru persoane cu dizabilități.</div></li>
+        <li><span class="tag">4</span><div>Buton de afișare / ascundere a panoului <b>Note</b> (note ale vorbitorului).</div></li>
+      </ul>
+      <ul class="legend">
+        <li><span class="tag">5</span><div>Buton de <b>inserare a comentariilor</b> pentru diapozitivul curent.</div></li>
+        <li><span class="tag">6</span><div>Zona de control a <b>modului de vizualizare</b> (Normal, Sortare diapozitive, etc.).</div></li>
+        <li><span class="tag">7</span><div>Zona de <b>panoramare</b> (mărire / micșorare) a diapozitivului — cursorul de zoom.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 8. REALIZAREA UNEI PREZENTĂRI -->
+<!-- ============================================================ -->
+<section class="section tint" id="realizare">
+  <div class="container">
+    <span class="kicker">🧱 Reține</span>
+    <h2>Realizarea unei prezentări</h2>
+    <p>O prezentare electronică conține mai multe <b>diapozitive</b>, pe care sunt inserate informații. Fiecare diapozitiv conține mai multe <b>obiecte</b> care ilustrează ideile: casete de text, imagini, sunete, tabele, legături (hiperlinkuri), forme diverse.</p>
+
+    <h3 style="margin: 30px 0 12px;">A. Operații de gestionare a fișierelor</h3>
+    <div class="two-col">
+      <ul class="check">
+        <li><b>Creare</b> fișier nou — fila Fișier → Nou (Ctrl+N).</li>
+        <li><b>Deschidere</b> fișier — fila Fișier → Deschidere (Ctrl+O).</li>
+        <li><b>Salvare</b> fără a schimba nume/format/locație — Fișier → Salvare (Ctrl+S).</li>
+        <li><b>Salvare ca</b> — cu alt nume, format (.pptx, .ppt, .pdf, .mp4) sau locație (F12).</li>
+        <li><b>Închidere</b> fișier — Fișier → Închidere. Se poate salva chiar dacă nu are diapozitive!</li>
+      </ul>
+      <figure class="figure" style="margin-top:0;">
+        <img src="assets/meniu_fisier.png" alt="Meniul Fișier din PowerPoint - Backstage" style="max-width:180px; margin:0 auto;">
+        <figcaption>Toate aceste operații pornesc din fila <b>Fișier</b>.</figcaption>
+      </figure>
+    </div>
+
+    <h4 style="margin: 24px 0 10px; color:var(--teal-dark); font-family:'Baloo 2',sans-serif;">Expunerea prezentării</h4>
+    <div class="two-col">
+      <figure class="figure" style="margin-top:0;">
+        <img src="assets/expunere_start.png" alt="Comenzile De la început și De la diapozitivul curent">
+      </figure>
+      <ul class="check">
+        <li><b>Pornire</b> — fila Expunere diapozitive → De la început (F5) sau De la diapozitivul curent.</li>
+        <li><b>Parcurgere</b> — săgeți Înainte/Înapoi sau Space/Backspace.</li>
+        <li><b>Ieșire</b> — tasta Esc (sau click, dacă ești la final).</li>
+      </ul>
+    </div>
+
+    <h3 style="margin: 34px 0 12px;">B. Lucrul cu diapozitivele</h3>
+    <ul class="check">
+      <li><b>Inserare diapozitiv nou</b> — Inserare → Diapozitiv nou (Ctrl+M) sau click-dreapta pe panoul de miniaturi.</li>
+      <li><b>Ștergere diapozitiv</b> — click-dreapta pe diapozitiv → Ștergere diapozitiv.</li>
+      <li><b>Copiere</b> — Ctrl+C pe miniatură, apoi Ctrl+V unde vrei să-l adaugi.</li>
+      <li><b>Duplicare</b> — „Dublare diapozitiv” din meniul de click-dreapta.</li>
+      <li><b>Mutare</b> — Decupare (Ctrl+X), apoi Lipire (Ctrl+V) în noua poziție.</li>
+    </ul>
+
+    <h3 style="margin: 34px 0 16px;">C. Lucrul cu obiectele unui diapozitiv</h3>
+    <div class="three-col">
+      <div class="mini-card"><img src="assets/font_paragraf.png" alt="Grupurile Font și Paragraf"><h4>Casete de text</h4><p>Inserare → Casetă text. Formatezi din fila Pornire, grupurile Font și Paragraf.</p></div>
+      <div class="mini-card"><img src="assets/buton_tabel.png" alt="Butonul Tabel din fila Inserare"><h4>Tabele</h4><p>Inserare → Tabel. Alegi numărul de linii și coloane trecând cu mouse-ul.</p></div>
+      <div class="mini-card"><img src="assets/buton_imagini.png" alt="Butonul Imagini din fila Inserare"><h4>Imagini importate</h4><p>Inserare → Imagini, apoi alegi sursa: local, bancă de imagini sau internet.</p></div>
+      <div class="mini-card"><img src="assets/buton_forme.png" alt="Butonul Forme din fila Inserare"><h4>Forme</h4><p>Inserare → Forme, apoi alegi forma dorită din meniu.</p></div>
+      <div class="mini-card"><img src="assets/buton_audio.png" alt="Butonul Audio din fila Inserare"><h4>Sunete</h4><p>Inserare → Audio — sunet existent sau înregistrat cu microfonul.</p></div>
+      <div class="mini-card"><img src="assets/buton_video.png" alt="Butonul Video din fila Inserare"><h4>Animații video</h4><p>Inserare → Video — clip local, din bancă sau de pe internet.</p></div>
+      <div class="mini-card"><img src="assets/buton_link.png" alt="Butonul Link din fila Inserare"><h4>Legături</h4><p>Inserare → Link — hiperlink către pagini web sau documente.</p></div>
+      <div class="mini-card"><img src="assets/teme.png" alt="Galeria de teme din fila Proiectare"><h4>Teme</h4><p>Fila Proiectare, grupul Teme — culori, fonturi și efecte pentru un aspect profesional.</p></div>
+      <div class="mini-card"><img src="assets/buton_aspect.png" alt="Butonul Aspect din fila Pornire"><h4>Aspect</h4><p>Formatarea, poziționarea și substituenții (containere) pentru conținutul unui diapozitiv.</p></div>
+    </div>
+
+    <h3 style="margin: 36px 0 12px;">D. Drepturi de autor</h3>
+    <div class="two-col">
+      <p>Materialele de pe internet (texte, imagini, video, sunete) care nu sunt creații proprii pot fi folosite gratuit doar dacă titularul dreptului de autor permite acest lucru. Respectarea drepturilor de autor este obligatorie — e o chestiune legală, dar și de respect față de cei care investesc timp, muncă și bani.</p>
+      <img src="assets/girl_peek.png" alt="Elevă care privește peste o coală albă" style="max-width:220px; border-radius:16px; margin:0 auto;">
+    </div>
+    <div class="avertisment" style="margin-top:0;">
+      <div class="tag">📌 Important pentru proiecte școlare</div>
+      <p style="margin:0;">Dacă folosești materiale de pe internet, cărți sau publicații, menționează întotdeauna, într-o secțiune <b>Bibliografie</b>, sursa (autor, titlu, site web).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 9. ELEMENTE DE DESIGN -->
+<!-- ============================================================ -->
+<section class="section" id="design">
+  <div class="container">
+    <span class="kicker">🎨 Reține</span>
+    <h2>Elemente de design al prezentării</h2>
+    <div class="two-col">
+      <ul class="check">
+        <li><b>Claritatea</b> — caractere suficient de mari, vizibile de la distanță.</li>
+        <li><b>Structurarea</b> — informație succintă, organizată gradat, pe cadre simple.</li>
+        <li><b>Impactul vizual</b> — folosirea potrivită a imaginilor, culorilor, luminii/umbrelor, graficelor, animațiilor.</li>
+        <li><b>Impactul emoțional</b> — sunete, culori și contraste potrivite, legate direct de partea vizuală.</li>
+      </ul>
+      <img src="assets/teacher_students.png" alt="Profesoară cu elevi în jurul unor laptopuri" style="border-radius:16px;">
+    </div>
+
+    <h3 style="margin: 32px 0 14px;">Formatarea diapozitivelor</h3>
+    <div class="three-col">
+      <div class="mini-card">
+        <img src="assets/dimensiune_diapozitiv.png" alt="Panoul Dimensiune diapozitiv - Standard 4:3 sau Ecran lat 16:9">
+        <h4>Dimensiune diapozitiv</h4>
+        <p><b>Cum ajungi:</b> fila <b>Proiectare</b> (Design) → butonul <b>Dimensiune diapozitiv</b>. Alegi Standard (4:3) sau Ecran lat (16:9), potrivit proiectorului sau ecranului pe care vei expune.</p>
+      </div>
+      <div class="mini-card">
+        <img src="assets/format_fundal1.png" alt="Panoul Format fundal cu opțiuni de umplere">
+        <h4>Formatare fundal</h4>
+        <p><b>Cum ajungi:</b> click-dreapta pe diapozitiv → <b>Formatare fundal</b>, sau fila <b>Proiectare</b> → <b>Formatare fundal</b>. Alegi umplere solidă, gradient, imagine/textură sau model.</p>
+      </div>
+      <div class="mini-card">
+        <img src="assets/teme.png" alt="Galeria de teme">
+        <h4>Teme</h4>
+        <p><b>Cum ajungi:</b> fila <b>Proiectare</b> (Design) → grupul <b>Teme</b>. Alege o temă gata făcută — culori, fonturi și efecte unitare pentru toată prezentarea.</p>
+      </div>
+    </div>
+
+    <h3 style="margin: 32px 0 14px;">Formatarea textului</h3>
+    <p><b>Cum ajungi:</b> selectezi textul sau caseta de text → apare fila suplimentară <b>Format formă</b> (sau din fila Pornire, grupurile Font și Paragraf).</p>
+    <div class="figure"><img src="assets/format_forma_tab.png" alt="Fila Format formă cu Stiluri de forme, Stiluri WordArt, Aranjare"></div>
+    <div class="two-col">
+      <div class="mini-card"><img src="assets/wordart_stiluri.png" alt="Galeria Stiluri rapide WordArt"><h4>Stiluri rapide (WordArt)</h4><p>Literele pot primi „corp” — se pot transforma pentru un aspect 3D.</p></div>
+      <div class="mini-card"><img src="assets/wordart_efecte.png" alt="Meniul Efecte text: Umbră, Reflexie, Strălucire, Relief, Rotație 3-D"><h4>Efecte text</h4><p>Umbre, reflexii, străluciri și alte efecte pentru text.</p></div>
+    </div>
+
+    <h3 style="margin: 32px 0 14px;">Formatarea obiectelor</h3>
+    <p><b>Cum ajungi:</b> click-dreapta pe orice obiect → alege panoul potrivit: <b>Formatare formă</b> (pentru text, tabele, forme), <b>Formatare Video</b> sau <b>Formatare imagine</b>. Pentru fundal: click-dreapta pe diapozitiv → Formatare fundal.</p>
+    <div class="three-col">
+      <div class="mini-card"><img src="assets/formatare_forma.png" alt="Panoul Formatare formă"><h4>Formatare formă</h4><p>Dimensiune, umplere, contur, efecte. Se deschide și din fila Format formă când obiectul e selectat.</p></div>
+      <div class="mini-card"><img src="assets/formatare_video.png" alt="Panoul Formatare video"><h4>Formatare video</h4><p>Umbră, reflexie, strălucire, format 3-D. Apare când selectezi un clip video.</p></div>
+      <div class="mini-card"><img src="assets/formatare_imagine.png" alt="Panoul Formatare imagine"><h4>Formatare imagine</h4><p>Muchii atenuate, efecte artistice, corecții de culoare. Apare când selectezi o imagine.</p></div>
+    </div>
+
+    <div class="two-col" style="margin-top:26px;">
+      <div>
+        <h4 style="color:var(--teal-dark); font-family:'Baloo 2',sans-serif; margin-bottom:8px;">Efecte de animație</h4>
+        <p>Animația se aplică unui obiect selectat, din fila <b>Animații</b>. Se poate previzualiza, iar pentru unele tipuri se configurează și „Opțiuni efect”.</p>
+        <img src="assets/fila_animatii2.png" alt="Grupurile Previzualizare, Animație și Animație avansată" style="border-radius:8px;border:1px solid var(--line);">
+      </div>
+      <div>
+        <h4 style="color:var(--teal-dark); font-family:'Baloo 2',sans-serif; margin-bottom:8px;">Efecte de tranziție</h4>
+        <p>Tranziția apare la încărcarea unui diapozitiv, din fila <b>Tranziții</b> → grupul „Tranziție la acest diapozitiv”.</p>
+        <img src="assets/fila_tranzitii2.png" alt="Grupurile Previzualizare și Tranziție la acest diapozitiv" style="border-radius:8px;border:1px solid var(--line);">
+      </div>
+    </div>
+
+    <h3 style="margin: 40px 0 14px;">Reguli de design și redactare</h3>
+    <div class="two-col">
+      <div class="retine" style="margin-top:0;">
+        <div class="tag">A. Design</div>
+        <ul class="check" style="margin:0;">
+          <li>Diapozitive coerente, design unitar și armonios.</li>
+          <li>Puțin text (max. 40 de cuvinte, pe cel mult 6–7 rânduri) — ce poate fi imagine sau simbol, se înlocuiește.</li>
+          <li>Maximum trei tipuri de caractere pe pagină, cu dimensiune ≥ 18.</li>
+          <li>Cel mult trei culori pe diapozitiv.</li>
+          <li>Contrast bun între fundal și text.</li>
+          <li>Elementele nu trebuie să depășească zona diapozitivului.</li>
+          <li>Grafice clare, fără informații neesențiale; tabele de mici dimensiuni.</li>
+          <li>Sunete discrete, ambientale — nu stridente.</li>
+          <li>Tranziții simple, la fel pe tot parcursul, pentru senzația de unitate.</li>
+        </ul>
+      </div>
+      <div class="sfat" style="margin-top:0;">
+        <div class="tag">B. Conținut</div>
+        <ul class="check" style="margin:0;">
+          <li>Primul diapozitiv (pagina de titlu) conține: titlul, autorul, activitatea/evenimentul, data.</li>
+          <li>Ultimul diapozitiv conține un <b>Mulțumesc!</b>, alături de o concluzie sau un mesaj pentru public.</li>
+          <li>Prezentarea trebuie verificată — fără greșeli gramaticale sau de ortografie.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="margin: 40px 0 18px;">Greșeli tipice de evitat</h3>
+    <div class="mistake">
+      <div class="no">1</div>
+      <div><h4>Încărcarea diapozitivelor cu mult text sau obiecte</h4><p>Publicul citește mai întâi ecranul, apoi ascultă prezentatorul. Prea multă informație obosește privitorul și îl împiedică să înțeleagă mesajul.</p></div>
+    </div>
+    <div class="mistake">
+      <div class="no">2</div>
+      <div><h4>Dimensiune nepotrivită a caracterelor</h4><p>Un text prea mic pentru sala respectivă înseamnă că unii nu vor putea urmări deloc prezentarea.</p></div>
+    </div>
+    <div class="mistake">
+      <div class="no">3</div>
+      <div><h4>Supraîncărcarea cu detalii</h4><p>Un grafic cu prea multe informații devine greu de înțeles. Se expun mai întâi rezultatele/concluziile, apoi se detaliază.</p></div>
+    </div>
+    <figure class="figure">
+      <img src="assets/graphic_overload.png" alt="Ecran și laptop afișând grafice supraîncărcate cu informații">
+      <figcaption>Când un grafic are prea multe date deodată, mesajul se pierde.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 10. SUSȚINEREA UNEI PREZENTĂRI -->
+<!-- ============================================================ -->
+<section class="section tint" id="sustinere">
+  <div class="container">
+    <span class="kicker">🎤 Reține</span>
+    <h2>Susținerea unei prezentări</h2>
+    <div class="two-col">
+      <ul class="check">
+        <li>Cunoaștem bine <b>cadrul</b> în care va fi susținută și ce dotări/echipamente avem la dispoziție.</li>
+        <li>Știm exact cui ne adresăm — <b>auditoriul</b> (publicul).</li>
+        <li>Proiectăm și realizăm temeinic prezentarea, adaptată publicului și cadrului.</li>
+        <li>Respectăm regulile de <b>ținută, comportament și exprimare</b>.</li>
+        <li>Folosim mijloace de <b>captare a atenției</b> publicului.</li>
+      </ul>
+      <img src="assets/classroom_hands.png" alt="Elevi ridicând mâna într-o clasă, în timpul unei prezentări" style="border-radius:16px;">
+    </div>
+
+    <h3 style="margin: 34px 0 16px;">Sfaturi pentru o prezentare reușită</h3>
+    <p>Verifică din timp sala și echipamentele (calculator, videoproiector) — situațiile în care ceva nu funcționează pot compromite prezentarea. Verifică și culorile de pe ecranul de proiecție, care pot fi diferite față de cele de pe monitor.</p>
+    <p>În timpul prezentării: ținută decentă, stai în picioare, aproape de public, ține publicul concentrat pe toată durata. Nu se bea apă în timpul expunerii — se folosesc pauzele pentru asta; apa lângă echipamente e un risc. Elimină ticurile deranjante (jocul cu părul, pixul, guma). Discurs corect gramatical, propoziții scurte, termeni clari; vorbește rar și suficient de tare; folosește comparații și analogii. Exersează dinainte, ca discursul să se încadreze în timpul alocat, și urmărește tot timpul comportamentul publicului.</p>
+
+    <div class="flower-wrap">
+      <div class="flower" aria-label="Strategii pentru realizarea unei prezentări reușite: Umor, Naturalețe, Privire, Pauze, Energie și Entuziasm, Grafică, Gesturi, Interacțiunea cu publicul">
+        <div class="petal p1"><span>Umor</span></div>
+        <div class="petal p2"><span>Naturalețe</span></div>
+        <div class="petal p3"><span>Privire</span></div>
+        <div class="petal p4"><span>Pauze</span></div>
+        <div class="petal p5"><span>Energie /<br>Entuziasm</span></div>
+        <div class="petal p6"><span>Grafică</span></div>
+        <div class="petal p7"><span>Gesturi</span></div>
+        <div class="petal p8"><span>Interacțiunea<br>cu publicul</span></div>
+        <div class="center">Strategii pentru o prezentare reușită</div>
+      </div>
+    </div>
+
+    <h3 style="margin: 40px 0 18px;">Greșeli tipice de evitat</h3>
+    <div class="two-col">
+      <div>
+        <div class="mistake">
+          <div class="no">1</div>
+          <div><h4>Depășirea timpului alocat</h4><p>E o chestiune de responsabilitate și respect — persoana următoare poate rămâne fără timp.</p></div>
+        </div>
+        <div class="mistake">
+          <div class="no">2</div>
+          <div><h4>Citirea de pe diapozitive</h4><p>Prezentatorul trebuie să se ghideze după informație și să vorbească liber, conectat cu publicul — nu să citească ecranul.</p></div>
+        </div>
+        <div class="mistake">
+          <div class="no">3</div>
+          <div><h4>Interacțiune redusă cu publicul</h4><p>Comunicarea și dialogul cu publicul mențin atenția pe toată durata prezentării.</p></div>
+        </div>
+      </div>
+      <img src="assets/boy_presenting.png" alt="Elev susținând o prezentare în fața profesoarei, cu o diagramă pe ecran" style="border-radius:16px;">
+    </div>
+  </div>
+</section>
+
+<footer class="end">
+  <div class="container">
+    <h2 style="margin-bottom:10px;">Gata de aplicat!</h2>
+    <p style="margin:0 auto 18px;">Reveniți la pagina principală pentru a continua cu alte lecții.</p>
+    <a class="btn" href="index.html">← Înapoi la lecții</a>
+  </div>
+</footer>
+
+<script>
+  /* ---------- highlight active TOC link on scroll ---------- */
+  const sections = document.querySelectorAll('.section, header.lesson-hero');
+  const tocLinks = document.querySelectorAll('.toc a');
+  function idFor(el){ return el.id ? '#'+el.id : null; }
+  window.addEventListener('scroll', () => {
+    let current = null;
+    document.querySelectorAll('.section[id]').forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if(rect.top <= 120) current = sec.id;
+    });
+    tocLinks.forEach(a => {
+      a.classList.toggle('active', current && a.getAttribute('href') === '#'+current);
+    });
+  }, { passive:true });
+
+  /* ================= JOC: Electronică sau pe hârtie? ================= */
+  const QUESTIONS = [
+    { text: "Poate conține sunete, animații și hyperlinkuri către pagini web.", answer: "electronic" },
+    { text: "Se scrie sau se tipărește pe foi mari, fixate pe un șevalet rotativ.", answer: "paper" },
+    { text: "Se poate actualiza rapid, oricând, fără să retipărești nimic.", answer: "electronic" },
+    { text: "Poate include note ale vorbitorului, vizibile doar pentru prezentator.", answer: "electronic" },
+    { text: "Se realizează de obicei manual sau la imprimantă, pe coli de dimensiuni mari.", answer: "paper" },
+    { text: "Se afișează pe ecran cu ajutorul unui videoproiector conectat la calculator.", answer: "electronic" },
+    { text: "Diapozitivele ei se numesc și slide-uri.", answer: "electronic" },
+    { text: "Poate fi împărțită publicului sub formă de extrase (handouts) tipărite.", answer: "electronic" },
+  ];
+
+  let order = [...QUESTIONS].sort(() => Math.random()-0.5);
+  let idx = 0, score = 0;
+
+  const stage = document.getElementById('stage');
+  const scoreEl = document.getElementById('score');
+  const totalEl = document.getElementById('total');
+  const dotsEl = document.getElementById('dots');
+  totalEl.textContent = order.length;
+
+  function renderDots(){
+    dotsEl.innerHTML = order.map((_,i) => `<span class="${i < idx ? 'done':''}"></span>`).join('');
+  }
+
+  function renderQuestion(){
+    if(idx >= order.length){
+      stage.innerHTML = `
+        <div class="game-done">
+          <div class="big">🎉</div>
+          <h3>Ați terminat recapitularea!</h3>
+          <p>Scor final: <b>${score} din ${order.length}</b></p>
+          <button class="btn amber" onclick="restartGame()">Joacă din nou</button>
+        </div>`;
+      return;
+    }
+    const q = order[idx];
+    stage.innerHTML = `
+      <div class="stmt-card">${q.text}</div>
+      <div class="choice-row">
+        <button class="choice-btn electronic" onclick="answer('electronic')">💻 Prezentare electronică</button>
+        <button class="choice-btn paper" onclick="answer('paper')">📄 Prezentare pe hârtie</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    `;
+    renderDots();
+  }
+
+  window.answer = function(choice){
+    const q = order[idx];
+    const fb = document.getElementById('feedback');
+    const correct = choice === q.answer;
+    if(correct){ score++; scoreEl.textContent = score; }
+    fb.textContent = correct ? "✅ Corect! Bravo!" : `✖ Nu chiar — era „${q.answer === 'electronic' ? 'prezentare electronică' : 'prezentare pe hârtie'}”.`;
+    fb.className = 'feedback ' + (correct ? 'ok' : 'bad');
+    document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+    setTimeout(() => { idx++; renderQuestion(); }, 1100);
+  }
+
+  window.restartGame = function(){
+    order = [...QUESTIONS].sort(() => Math.random()-0.5);
+    idx = 0; score = 0; scoreEl.textContent = 0;
+    renderQuestion();
+  }
+
+  renderQuestion();
+</script>
+</body>
+</html>
