@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exerciții PowerPoint - Sistemul Solar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1a3a52 50%, #2d5a7b 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ff4500 100%);
+            color: #0d1b2a;
+            padding: 50px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 900;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .exercise-section {
+            margin-bottom: 40px;
+            border-left: 5px solid #ff8c00;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .exercise-section h2 {
+            color: #0d1b2a;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .exercise-section h2 .number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #0d1b2a;
+            border-radius: 50%;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .theme-box {
+            background: linear-gradient(135deg, #e8f4f8 0%, #e0f2fe 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ff8c00;
+            border-top: 2px solid #ffd700;
+        }
+
+        .theme-box strong {
+            color: #ff8c00;
+            font-size: 1.1em;
+        }
+
+        .requirements {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .requirements h3 {
+            color: #0d1b2a;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .requirement-item {
+            background: white;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 3px solid #ff8c00;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .requirement-item strong {
+            color: #ff8c00;
+        }
+
+        .requirement-item ul, .requirement-item ol {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .requirement-item li {
+            margin: 5px 0;
+        }
+
+        .hints-button {
+            background: linear-gradient(135deg, #ff8c00, #ff6b35);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .hints-button:hover {
+            background: linear-gradient(135deg, #ff7700, #ff5722);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.4);
+        }
+
+        .hints-button.active {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+
+        .hints-content {
+            display: none;
+            background: #fffacd;
+            border: 3px solid #ffd700;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 15px;
+            color: #333;
+        }
+
+        .hints-content.visible {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step {
+            background: white;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #ffd700;
+            color: #555;
+            position: relative;
+            padding-left: 35px;
+        }
+
+        .step::before {
+            content: "→";
+            position: absolute;
+            left: 10px;
+            color: #ff8c00;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .step strong {
+            color: #0d1b2a;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #ff8c00, #ff6b35);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        .data-table tr:hover {
+            background: #ffe8cc;
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, #ff8c00 0%, #ff6b35 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 12px;
+            margin: 35px 0;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3);
+        }
+
+        .download-section h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .download-btn {
+            background: white;
+            color: #ff8c00;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #0d1b2a, #1a3a52);
+            padding: 40px;
+            text-align: center;
+            border-top: 3px solid #ffd700;
+            color: white;
+        }
+
+        .footer p {
+            font-size: 1.1em;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .footer .thank-you {
+            font-size: 1.4em;
+            color: #ffd700;
+            margin-top: 20px;
+            font-weight: 700;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin: 0 5px;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+            border-left: 4px solid #2196F3;
+            padding: 18px;
+            margin: 15px 0;
+            border-radius: 8px;
+            color: #1565c0;
+            font-weight: 500;
+        }
+
+        .tip-box strong {
+            color: #0d1b2a;
+        }
+
+        .complexity-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff8c00, #ff6b35);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .planeta-info {
+            background: linear-gradient(135deg, #f5f5f5, #ffffff);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #ff8c00;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .planeta-info h4 {
+            grid-column: 1 / -1;
+            color: #ff8c00;
+            margin-bottom: 8px;
+        }
+
+        .planeta-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .color-sample {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-sample:hover {
+            transform: scale(1.15);
+        }
+
+        .bonus-section {
+            background: linear-gradient(135deg, #fff9e6, #fff5cc);
+            border: 3px dashed #ffd700;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .bonus-section h4 {
+            color: #ff8c00;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .activity-list li {
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #ff8c00;
+            color: #333;
+        }
+
+        .activity-list li::before {
+            content: "🎯 ";
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 EXERCIȚII POWERPOINT 🌍</h1>
+            <p>SISTEMUL SOLAR - Explorează Universul</p>
+        </div>
+
+        <div class="content">
+            <!-- Introducere -->
+            <div class="exercise-section">
+                <h2><span class="number">📚</span>TEMA PROIECTULUI</h2>
+                <div class="theme-box">
+                    <strong>Tema:</strong> <em>"Sistemul Solar - Planetele și Spațiul"</em>
+                    <p style="margin-top: 10px; color: #555;">
+                        Vei crea o prezentare PowerPoint care explorează frumusețea și misterul Sistemului Solar. 
+                        Vei invăța despre planete, Soare, sateliți și cum funcționează Universul nostru! 
+                        Este o temă fascinantă care va captiva publicul! 🚀
+                    </p>
+                </div>
+
+                <div class="theme-box" style="margin-top: 20px;">
+                    <strong>De ce Sistemul Solar?</strong>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>🌟 Copiii adoră spațiul și planetele!</li>
+                        <li>📊 Oferă oportunitate de a folosi date și comparații</li>
+                        <li>🎨 Permite creativity cu imagini și culori spectaculoase</li>
+                        <li>📈 Exercițiu complex cu tabele, diagrame și animații</li>
+                        <li>🌈 Design vizual impresionant și modern</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DIAPOZITIVUL 1 -->
+            <div class="exercise-section">
+                <h2><span class="number">1️⃣</span>DIAPOZITIVUL 1: PAGINA DE TITLU - "Spațiul Infinit"</h2>
+                
+                <div class="theme-box">
+                    <strong>Tip diapozitiv:</strong> Titlu, Subtitlu și Fundal Tematic
+                </div>
+
+                <div class="requirements">
+                    <h3>📋 Cerințe:</h3>
+                    <div class="requirement-item">
+                        ✅ <strong>Titlul:</strong> "🌍 SISTEMUL SOLAR 🌍"
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Format titlu:</strong> Font Impact sau Arial Black, Bold, Mărime 66, Culoare Auriu (RGB: 255, 215, 0)
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Subtitluri (în ordine):</strong> 
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Rândul 1: "Explorează Universul" - Mărime 32, Italic, Culoare Cyan (173, 216, 230)</li>
+                            <li>Rândul 2: "Clasa: [Clasa Ta] | Data: [Data curentă]" - Mărime 20, Alb</li>
+                        </ul>
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Fundal:</strong> Culoare albastru foarte închis (RGB: 13, 27, 42) - să seamene cu spațiul negru
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Aliniere:</strong> Tot textul centrat
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Efect BONUS:</strong> Adaugă emojis (🌍, 🌟, 🚀) în diapozitiv pentru vibe cosmic
+                    </div>
+                </div>
+
+                <div class="color-palette">
+                    <div class="color-sample" style="background: #0d1b2a;" title="Fundal - Spațiu negru"></div>
+                    <div class="color-sample" style="background: #ffd700;" title="Auriu - Soare"></div>
+                    <div class="color-sample" style="background: #add8e6;" title="Cyan - Pământ"></div>
+                    <div class="color-sample" style="background: #ffffff;" title="Alb - Text"></div>
+                    <div class="color-sample" style="background: #ff8c00;" title="Portocaliu - Planeta"></div>
+                </div>
+
+                <button class="hints-button" onclick="toggleHints('hints1')">
+                    💡 Indicii pas cu pas
+                </button>
+
+                <div class="hints-content" id="hints1">
+                    <strong>🎯 Cum să faci pas cu pas:</strong>
+                    <div class="step">
+                        <strong>Pasul 1:</strong> Deschide PowerPoint și selectează "Prezentare necompletată"
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 2:</strong> La start, alege layout-ul "Blank" (Gol)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 3:</strong> Click dreapta pe fundal → Formatare fundal → Alege culoare solidă NEAGRĂ-ALBASTRĂ (13, 27, 42)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 4:</strong> Fila Inserare → Casetă text. Desenează casetă pentru titlu (centru sus)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 5:</strong> Scrie titlul: "🌍 SISTEMUL SOLAR 🌍" (copy-paste emoji din internet!)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 6:</strong> Selectează textul și în fila Pornire → Font: Impact sau Arial Black, 66pt, Bold
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 7:</strong> Culoare text: Auriu (RGB 255, 215, 0) - click pe săgeată culoare
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 8:</strong> Aliniere: Click dreapta pe text → Aliniere → Centru
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 9:</strong> Adaugă o altă casetă pentru subtitlu. Scrie "Explorează Universul"
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 10:</strong> Format: 32pt, Italic, Cyan (173, 216, 230), Centru
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 11:</strong> Adaugă a treia casetă: "Clasa: [Clasa Ta] | Data: [Data curentă]"
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 12:</strong> Format: 20pt, Alb, Centru - pozitionează jos pe diapozitiv
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Sfat:</strong> Emoji-urile fac pagina mai frumoasă și atrăgătoare! Caută pe Google "emoji copy paste"
+                </div>
+            </div>
+
+            <!-- DIAPOZITIVUL 2 -->
+            <div class="exercise-section">
+                <h2><span class="number">2️⃣</span>DIAPOZITIVUL 2: CUPRINS CU STRUCTURĂ DETALIATĂ</h2>
+                
+                <div class="theme-box">
+                    <strong>Tip diapozitiv:</strong> Titlu și Listă Numerotată cu Culori Diferite
+                </div>
+
+                <div class="requirements">
+                    <h3>📋 Cerințe:</h3>
+                    <div class="requirement-item">
+                        ✅ <strong>Titlu:</strong> "CUPRINS" - Font Impact, 48pt, Bold, Culoare Portocalie (255, 140, 0)
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Format lista:</strong> Numerotare (1, 2, 3...), Font Arial, 20pt
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>INOVATIV - Culoare diferită pentru fiecare punct:</strong>
+                        <div style="margin-top: 10px;">
+                            <strong>Punct 1:</strong> Culoare Auriu (255, 215, 0)<br>
+                            <strong>Punct 2:</strong> Culoare Portocalie (255, 140, 0)<br>
+                            <strong>Punct 3:</strong> Culoare Roșu (220, 20, 60)<br>
+                            <strong>Punct 4:</strong> Culoare Maro (139, 69, 19)<br>
+                            <strong>Punct 5:</strong> Culoare Albastru Deschis (30, 144, 255)<br>
+                            <strong>Punct 6:</strong> Culoare Violet (148, 0, 211)<br>
+                            <strong>Punct 7:</strong> Culoare Gri (105, 105, 105)<br>
+                            <strong>Punct 8:</strong> Culoare Verde (34, 139, 34)
+                        </div>
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Conținut:</strong>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Sistemul Solar - Structură și componente</li>
+                            <li>Soarele - Steaua centrală a sistemului nostru</li>
+                            <li>Planetele Interioare (Mercur, Venus, Pământ, Marte)</li>
+                            <li>Centura de Asteroizi</li>
+                            <li>Planetele Exterioare (Jupiter, Saturn, Uranus, Neptun)</li>
+                            <li>Sateliți naturali - Lunile planetelor</li>
+                            <li>Comete și Meteorii - Vizitatori din spațiu</li>
+                            <li>Viața pe Pământ în Universul vast</li>
+                        </ol>
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Fundal:</strong> Culoare ușor albastră (240, 248, 255) - de contrast cu textul colorat
+                    </div>
+                </div>
+
+                <div class="color-palette">
+                    <div class="color-sample" style="background: #ffd700;" title="1. Auriu"></div>
+                    <div class="color-sample" style="background: #ff8c00;" title="2. Portocalie"></div>
+                    <div class="color-sample" style="background: #dc143c;" title="3. Roșu"></div>
+                    <div class="color-sample" style="background: #8b4513;" title="4. Maro"></div>
+                    <div class="color-sample" style="background: #1e90ff;" title="5. Albastru"></div>
+                    <div class="color-sample" style="background: #9400d3;" title="6. Violet"></div>
+                    <div class="color-sample" style="background: #696969;" title="7. Gri"></div>
+                    <div class="color-sample" style="background: #228b22;" title="8. Verde"></div>
+                </div>
+
+                <button class="hints-button" onclick="toggleHints('hints2')">
+                    💡 Indicii pas cu pas
+                </button>
+
+                <div class="hints-content" id="hints2">
+                    <strong>🎯 Cum să faci pas cu pas:</strong>
+                    <div class="step">
+                        <strong>Pasul 1:</strong> Adaugă un nou diapozitiv: Fila Pornire → Diapozitiv nou
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 2:</strong> Selectează layout "Blank" (Gol)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 3:</strong> Fundal: Click dreapta → Formatare fundal → Culoare solidă albastru deschis (240, 248, 255)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 4:</strong> Adaugă casetă text pentru titlu: "CUPRINS"
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 5:</strong> Format titlu: Impact, 48pt, Bold, Portocalie (255, 140, 0), Centru
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 6:</strong> Adaugă o altă casetă text pentru lista de puncte
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 7:</strong> Scrie punctele fără formatare (liber)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 8:</strong> Selectează DOAR prima linie (1. Sistemul Solar...)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 9:</strong> Schimbă culoarea în Auriu (255, 215, 0) - fila Pornire → Culoare text
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 10:</strong> Repetă pentru fiecare punct cu culoare diferită (vezi tabelul de culori!)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 11:</strong> Selectează toată lista și aplică numerotare: Fila Pornire → Numerotare (1, 2, 3)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 12:</strong> Ajustează mărimea fontului la 20pt pentru toată lista
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Sfat:</strong> Pentru a schimba culoarea doar a unei linii, selectează doar acea linie și aplică culoarea. PowerPoint permite acest lucru!
+                </div>
+            </div>
+
+            <!-- DIAPOZITIVUL 3: TABEL CU COMPARAȚII -->
+            <div class="exercise-section">
+                <h2><span class="number">3️⃣</span>DIAPOZITIVUL 3: TABEL COMPARATIV AL PLANETELOR</h2>
+                
+                <div class="theme-box">
+                    <strong>Tip diapozitiv:</strong> Titlu și Tabel cu Date
+                </div>
+
+                <div class="requirements">
+                    <h3>📋 Cerințe:</h3>
+                    <div class="requirement-item">
+                        ✅ <strong>Titlu:</strong> "PLANETELE SISTEMULUI SOLAR" - Impact, 42pt, Bold, Portocalie
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Crează un TABEL cu:</strong>
+                        <table class="data-table" style="margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>Planeta</th>
+                                    <th>Tip</th>
+                                    <th>Diametru (km)</th>
+                                    <th>Distanță de Soare</th>
+                                    <th>Luni</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Mercur</strong></td>
+                                    <td>Interioare</td>
+                                    <td>4.879</td>
+                                    <td>57.9 mil km</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Venus</strong></td>
+                                    <td>Interioare</td>
+                                    <td>12.104</td>
+                                    <td>108.2 mil km</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pământ</strong></td>
+                                    <td>Interioare</td>
+                                    <td>12.742</td>
+                                    <td>149.6 mil km</td>
+                                    <td>1 (Luna)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Marte</strong></td>
+                                    <td>Interioare</td>
+                                    <td>6.779</td>
+                                    <td>227.9 mil km</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Jupiter</strong></td>
+                                    <td>Exterioare</td>
+                                    <td>139.820</td>
+                                    <td>778.5 mil km</td>
+                                    <td>95</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Saturn</strong></td>
+                                    <td>Exterioare</td>
+                                    <td>116.460</td>
+                                    <td>1.434 mld km</td>
+                                    <td>146</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Uranus</strong></td>
+                                    <td>Exterioare</td>
+                                    <td>50.724</td>
+                                    <td>2.873 mld km</td>
+                                    <td>27</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Neptun</strong></td>
+                                    <td>Exterioare</td>
+                                    <td>49.244</td>
+                                    <td>4.495 mld km</td>
+                                    <td>14</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Format tabel:</strong>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Antet (header): Fundal Portocalie (255, 140, 0), Text Alb, Bold</li>
+                            <li>Rânduri cu Planetele Interioare: Fundal ușor Galben (255, 250, 200)</li>
+                            <li>Rânduri cu Planetele Exterioare: Fundal ușor Albastru (240, 248, 255)</li>
+                            <li>Font: Arial, 14pt</li>
+                        </ul>
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Fundal diapozitiv:</strong> Alb pur
+                    </div>
+                </div>
+
+                <button class="hints-button" onclick="toggleHints('hints3')">
+                    💡 Indicii pas cu pas
+                </button>
+
+                <div class="hints-content" id="hints3">
+                    <strong>🎯 Cum să faci pas cu pas:</strong>
+                    <div class="step">
+                        <strong>Pasul 1:</strong> Adaugă un diapozitiv nou → Layout "Blank"
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 2:</strong> Adaugă titlul: "PLANETELE SISTEMULUI SOLAR" (format: Impact, 42pt, Portocalie, Bold)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 3:</strong> Fila Inserare → Tabel → Selectează 5 coloane și 9 rânduri (1 antet + 8 planete)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 4:</strong> Scrie antetele: Planeta | Tip | Diametru (km) | Distanță de Soare | Luni
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 5:</strong> Umple tabelul cu datele planetelor (vezi tabelul din cerințe)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 6:</strong> Selectează rândul de antet (prima linie) → Click dreapta → Formatare tabel
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 7:</strong> Antet: Fundal Portocalie (255, 140, 0), Text Alb, Bold
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 8:</strong> Selectează rândurile cu Mercur, Venus, Pământ, Marte (Interioare)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 9:</strong> Click dreapta → Formatare tabel → Fundal Galben Deschis (255, 250, 200)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 10:</strong> Selectează rândurile cu Jupiter, Saturn, Uranus, Neptun (Exterioare)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 11:</strong> Fundal Albastru Deschis (240, 248, 255)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 12:</strong> Ajustează dimensiunile coloanelor pentru a se vedea bine (trage coloanele)
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Sfat:</strong> Tabelele cu date vorbesc de la sine! Copiii vor fi impresionați de aceste cifre colosale!
+                </div>
+            </div>
+
+            <!-- DIAPOZITIVUL 4: DIAGRAMĂ -->
+            <div class="exercise-section">
+                <h2><span class="number">4️⃣</span>DIAPOZITIVUL 4: DIAGRAMA ORBITELOR PLANETELOR</h2>
+                
+                <div class="theme-box">
+                    <strong>Tip diapozitiv:</strong> Titlu și Diagrama Vizuală cu Forme
+                </div>
+
+                <div class="complexity-badge">DIFICULTATE: MEDIE</div>
+
+                <div class="requirements">
+                    <h3>📋 Cerințe:</h3>
+                    <div class="requirement-item">
+                        ✅ <strong>Titlu:</strong> "ORBITA PLANETELOR DIN JURUL SOARELUI" - Impact, 38pt, Portocalie
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Crează o diagramă simplă:</strong>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Centru: Soare - Cerc Auriu (255, 215, 0), Text "☀️ SOARE"</li>
+                            <li>Orbita 1 (cea mai apropiată): Mercur - Cerc Gri, Text "☿ Mercur"</li>
+                            <li>Orbita 2: Venus - Cerc Galben, Text "♀ Venus"</li>
+                            <li>Orbita 3: Pământ - Cerc Albastru, Text "🌍 Pământ"</li>
+                            <li>Orbita 4: Marte - Cerc Roșu, Text "♂ Marte"</li>
+                            <li>Orbita 5: Jupiter - Cerc Portocalie, Text "♃ Jupiter"</li>
+                            <li>Orbita 6: Saturn - Cerc Galben pâlid, Text "♄ Saturn" (adaugă inel de Bezier!)</li>
+                            <li>Orbita 7: Uranus - Cerc Cyan, Text "♅ Uranus"</li>
+                            <li>Orbita 8: Neptun - Cerc Albastru Închis, Text "♆ Neptun"</li>
+                        </ul>
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Liniile de orbită:</strong> Trasează cercuri (Inserare → Forme → Cerc) pentru fiecare orbită
+                    </div>
+                    <div class="requirement-item">
+                        ✅ <strong>Design:</strong> Fundal negru (0, 0, 0) pentru efect cosmic
+                    </div>
+                </div>
+
+                <button class="hints-button" onclick="toggleHints('hints4')">
+                    💡 Indicii pas cu pas
+                </button>
+
+                <div class="hints-content" id="hints4">
+                    <strong>🎯 Cum să faci pas cu pas:</strong>
+                    <div class="step">
+                        <strong>Pasul 1:</strong> Adaugă un diapozitiv nou → Layout "Blank"
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 2:</strong> Fundal negru: Click dreapta → Formatare fundal → Negru (0, 0, 0)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 3:</strong> Adaugă titlul în sus - Text alb pentru contrast cu fundalul negru
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 4:</strong> Fila Inserare → Forme → Selectează "Oval" (Cerc)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 5:</strong> Desenează un cerc în centrul diapozitivului pentru Soare (mare, Auriu)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 6:</strong> Adaugă text în cerc: "☀️ SOARE" - Text Alb
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 7:</strong> Fila Inserare → Forme → Alege "Oval" din nou
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 8:</strong> Desenează un cerc mai mic lângă Soare pentru MERCUR - Gri
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 9:</strong> Adaugă text: "☿ Mercur"
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 10:</strong> Repetă pentru FIECARE planetă (8 planete în total)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 11:</strong> Fila Inserare → Forme → "Cerc" (fără interior, doar linie) pentru a marca orbitele
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 12:</strong> Desenează cercuri concentrice din jurul Soarelui pentru a arăta orbitele
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Sfat Avansat:</strong> Saturn are inele! Pentru a face inelele, folosește Inserare → Forme → Oval, desenează un oval larg și aplică "Fără umplere" ca format!
+                </div>
+            </div>
+
+            <!-- EXERCIȚIU COMPLEX -->
+            <div class="exercise-section">
+                <h2><span class="number">⭐</span>EXERCIȚIU AVANSAT: COMPARAȚIE DETALIAT</h2>
+                
+                <div class="complexity-badge">DIFICULTATE: ÎNALTĂ</div>
+
+                <div class="theme-box">
+                    <strong>Tip diapozitiv:</strong> Titlu, Text Detaliat și Imagine
+                </div>
+
+                <div class="requirements">
+                    <h3>📋 Cerințe Avansat:</h3>
+                    <div class="requirement-item">
+                        ✅ <strong>Crează 3 diapozitive DETALIATE pe tema:</strong>
+                        <div style="margin-top: 15px;">
+                            <strong>DIAPOZITIVUL 5: "PĂMÂNTUL - PLANETA VIEȚII"</strong>
+                            <ul style="margin-left: 20px; margin-top: 8px;">
+                                <li>Titlu: "🌍 PĂMÂNTUL - PLANETA VIEȚII" (Impact, 40pt, Albastru)</li>
+                                <li>Conținut: 
+                                    <div style="margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 5px;">
+                                        • Singura planetă cu viață cunoscută<br>
+                                        • Distanță de Soare: 149.6 miloane km<br>
+                                        • Diametru: 12.742 km<br>
+                                        • 1 Satelit: Luna<br>
+                                        • Vârstă: ~4.5 miliarde ani<br>
+                                        • Tempratură: -88°C la -58°C (medie 15°C)<br>
+                                        • Apă pe 71% din suprafață<br>
+                                        • Atmosferă: Azot (78%) și Oxigen (21%)
+                                    </div>
+                                </li>
+                                <li>Imagine: Pământul din spațiu (din NASA sau pixabay)</li>
+                            </ul>
+
+                            <strong style="margin-top: 15px; display: block;">DIAPOZITIVUL 6: "JUPITER - GIGANTUL GAZOS"</strong>
+                            <ul style="margin-left: 20px; margin-top: 8px;">
+                                <li>Titlu: "♃ JUPITER - GIGANTUL GAZOS" (Impact, 40pt, Portocalie)</li>
+                                <li>Conținut:
+                                    <div style="margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 5px;">
+                                        • Planeta cea mai mare din sistemul nostru<br>
+                                        • Distanță de Soare: 778.5 miloane km<br>
+                                        • Diametru: 139.820 km (11x mai mare decât Pământul)<br>
+                                        • 95 Sateliți cunoscuți! 🌙<br>
+                                        • Compus din gaze (Hidrogen și Heliu)<br>
+                                        • Grande Pată Roșie - furtună uriaș care durează sute de ani<br>
+                                        • Nu se poate sta pe Jupiter - nu are suprafață solidă!<br>
+                                        • 12 ani pentru a orbita Soarele
+                                    </div>
+                                </li>
+                                <li>Imagine: Jupiter cu inelele și Marea Pată Roșie</li>
+                            </ul>
+
+                            <strong style="margin-top: 15px; display: block;">DIAPOZITIVUL 7: "SATURN - REGELE INELELOR"</strong>
+                            <ul style="margin-left: 20px; margin-top: 8px;">
+                                <li>Titlu: "♄ SATURN - REGELE INELELOR" (Impact, 40pt, Galben)</li>
+                                <li>Conținut:
+                                    <div style="margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 5px;">
+                                        • Cea mai frumoasă planetă din sistemul nostru<br>
+                                        • Distanță de Soare: 1.434 miliarde km<br>
+                                        • Diametru: 116.460 km (9x mai mare decât Pământul)<br>
+                                        • INELELE: Făcute din miliarde de particule de gheață și rocă<br>
+                                        • 146 Sateliți! Cel mai mare: Titan (are oceane de metan!)<br>
+                                        • Cea mai puțin densă planetă - ar pluti pe apă!<br>
+                                        • Și ea este o planetă gazosă<br>
+                                        • 29 de ani pentru o orbită completă
+                                    </div>
+                                </li>
+                                <li>Imagine: Saturn cu inelele sale spectaculoase</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="hints-button" onclick="toggleHints('hints5')">
+                    💡 Indicii pas cu pas
+                </button>
+
+                <div class="hints-content" id="hints5">
+                    <strong>🎯 Cum să faci pas cu pas (pentru fiecare diapozitiv):</strong>
+                    <div class="step">
+                        <strong>Pasul 1:</strong> Adaugă 3 diapozitive noi → Layout "Blank"
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 2:</strong> Pentru fiecare: Adaugă titlu colorat corespunzător planetei
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 3:</strong> Adaugă o casetă text cu informații detaliate (copiază din cerințe)
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 4:</strong> Fila Inserare → Imagini → Caută imagine a planetei pe internet
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 5:</strong> Pozitionează imaginea dreapta textului
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 6:</strong> Ajustează dimensiunile pentru layout frumos
+                    </div>
+                    <div class="step">
+                        <strong>Pasul 7:</strong> Adaugă animații la text și imagine: Fila Animații → Apărere (Appear)
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Sfat:</strong> Aceste diapozitive cu date specifice sunt foarte atractive pentru Public! Cifrele mari surprind pe toată lumea.
+                </div>
+            </div>
+
+            <!-- BONUS ACTIVITIES -->
+            <div class="bonus-section">
+                <h4>🎯 ACTIVITĂȚI BONUS PENTRU COPII</h4>
+                <ul class="activity-list">
+                    <li><strong>Quiz interactiv:</strong> Adaugă o diapozitiv cu întrebări: "Ce planetă are inele?" sau "Care este cea mai mare planetă?"</li>
+                    <li><strong>Animații:</strong> Faceți planetele să apară cu efecte (Fila Animații → Fly In, Spin, etc.)</li>
+                    <li><strong>Video YouTube:</strong> Inserare → Video → Cauta "Sistema Solar Pentru Copii" și adaugă un clip</li>
+                    <li><strong>Tranziții spectaculoase:</strong> Pentru diapozitivurile cu planete, adaugă Tranziții → Fade/Wipe</li>
+                    <li><strong>Comparație mărime:</strong> Adaugă o diapozitiv unde compari dimensiunile planetelor vizual</li>
+                    <li><strong>Viață în spațiu:</strong> Diapozitiv despre posibilitatea vieții pe alte planete (Marte, Europa)</li>
+                </ul>
+            </div>
+
+            <!-- DESCĂRCARE POWERPOINT -->
+            <div class="download-section">
+                <h3>📥 DESCARCĂ PREZENTAREA DE BAZĂ</h3>
+                <p style="margin-bottom: 15px;">Folosește acest fișier PowerPoint ca punct de plecare pentru exerciții:</p>
+                <p><strong>Locul fișierului pe GitHub:</strong> <code>/assets/Sistemul_Solar_Baza.pptx</code></p>
+                <button class="download-btn" onclick="downloadPPTX()">
+                    <span>⬇️</span> Descarcă PowerPoint
+                </button>
+                <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.95;">
+                    (Conține diapozitivele 1-4 pregătite cu structură de bază)
+                </p>
+            </div>
+
+            <!-- SFATURI FINALE -->
+            <div class="exercise-section">
+                <h2><span class="number">💡</span>SFATURI PENTRU O PREZENTARE REUȘITĂ</h2>
+                
+                <div class="tip-box" style="border-left-color: #ff8c00; color: #ff8c00; background: #fff8f0;">
+                    <strong style="color: #ff8c00;">1. Frumusețe Vizuală:</strong> Spațiul este frumos! Folosește culori cosmice (negru, albastru, auriu, portocalie)
+                </div>
+
+                <div class="tip-box" style="border-left-color: #ff8c00; color: #ff8c00; background: #fff8f0;">
+                    <strong style="color: #ff8c00;">2. Date Interesante:</strong> Copiii vor fi surprinși de cifre colosale (distanțe, diametruri)
+                </div>
+
+                <div class="tip-box" style="border-left-color: #ff8c00; color: #ff8c00; background: #fff8f0;">
+                    <strong style="color: #ff8c00;">3. Emoji și Icoane:</strong> Simbolurile astronomice fac pagina mai atractivă (☀️, 🌍, ♃, ♄)
+                </div>
+
+                <div class="tip-box" style="border-left-color: #ff8c00; color: #ff8c00; background: #fff8f0;">
+                    <strong style="color: #ff8c00;">4. Imagini Spectaculoase:</strong> NASA și Pixabay au imagini incredibile ale planetelor!
+                </div>
+
+                <div class="tip-box" style="border-left-color: #ff8c00; color: #ff8c00; background: #fff8f0;">
+                    <strong style="color: #ff8c00;">5. Animații și Efecte:</strong> Folosește animații dar nu prea multe - calitatea peste cantitate!
+                </div>
+
+                <div class="tip-box" style="border-left-color: #ff8c00; color: #ff8c00; background: #fff8f0;">
+                    <strong style="color: #ff8c00;">6. Prezentare Orală:</strong> Practică-ți prezentarea! Spune fapte interesante pentru a capta atenția.
+                </div>
+            </div>
+
+            <!-- SURSE DE IMAGINI -->
+            <div class="exercise-section">
+                <h2><span class="number">🖼️</span>UNDE GĂSEȘTI IMAGINI</h2>
+                
+                <div class="theme-box">
+                    <strong>Surse Gratuite de Imagini:</strong>
+                    <ul style="margin-left: 20px; margin-top: 10px; color: #555;">
+                        <li><strong>Pixabay.com</strong> - Mii de imagini gratuite ale planetelor și spațiului</li>
+                        <li><strong>Unsplash.com</strong> - Imagini de înaltă calitate</li>
+                        <li><strong>NASA.gov</strong> - Imagini oficiale de la NASA (incluzând fotografii reale din spațiu!)</li>
+                        <li><strong>Wikipedia</strong> - Imagini cu informații despre fiecare planetă</li>
+                        <li><strong>Google Images</strong> - Cauta "[Planeta] HD image" și filtrez "Licență liberă"</li>
+                    </ul>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Sfat:</strong> Imaginile din NASA sunt autentice și impresionante! Copiilor le va plăcea să vadă fotografii reale din spațiu.
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🚀 Ți-ai creat o prezentare despre SPAȚIU! 🚀</p>
+            <p>Universul este vast, dar tu l-ai făcut mai ușor de înțeles! 🌌</p>
+            <p class="thank-you">✨ MULȚUMESC PENTRU ATENȚIE! ✨</p>
+            <p style="color: #ccc; margin-top: 20px; font-size: 0.9em;">
+                Creat cu 💛 pentru educație și fascinație pentru spațiu
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function toggleHints(id) {
+            const hintsElement = document.getElementById(id);
+            const button = event.target.closest('.hints-button');
+            
+            hintsElement.classList.toggle('visible');
+            button.classList.toggle('active');
+        }
+
+        function downloadPPTX() {
+            const localPath = './assets/Sistemul_Solar_Baza.pptx';
+            
+            const link = document.createElement('a');
+            link.href = localPath;
+            link.download = 'Sistemul_Solar_Baza.pptx';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('🚀 Descarcarea PowerPoint a început!\n\nNu uita să salvezi fișierul și să adaugi propriile imagini spectaculoase din spațiu!');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.exercise-section');
+            sections.forEach((section, index) => {
+                section.style.animation = `slideDown 0.5s ease forwards`;
+                section.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
