@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proiect PowerPoint – Clasa a VI-a</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --card: #1a1a2e;
+      --card-hover: #222240;
+      --accent: #7c5cff;
+      --accent2: #00d4aa;
+      --accent3: #ff6b9d;
+      --text: #e8e8f0;
+      --muted: #a0a0b8;
+      --border: rgba(124, 92, 255, 0.25);
+      --glow: rgba(124, 92, 255, 0.35);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Animated background */
+    .bg-shapes {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-shapes span {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: float 18s ease-in-out infinite;
+    }
+
+    .bg-shapes span:nth-child(1) {
+      width: 420px; height: 420px;
+      background: var(--accent);
+      top: -10%; left: -5%;
+      animation-delay: 0s;
+    }
+
+    .bg-shapes span:nth-child(2) {
+      width: 350px; height: 350px;
+      background: var(--accent2);
+      bottom: 10%; right: -8%;
+      animation-delay: -6s;
+    }
+
+    .bg-shapes span:nth-child(3) {
+      width: 280px; height: 280px;
+      background: var(--accent3);
+      top: 50%; left: 40%;
+      animation-delay: -12s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -40px) scale(1.05); }
+      66% { transform: translate(-20px, 25px) scale(0.95); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s ease-out;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(124, 92, 255, 0.15);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #00d4aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* Progress / total */
+    .total-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s ease-out 0.1s both;
+    }
+
+    .total-bar .points {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent2);
+    }
+
+    .total-bar .label {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .progress-track {
+      flex: 1;
+      min-width: 140px;
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Sections */
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 2rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 0.85rem;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      animation: fadeUp 0.6s ease-out both;
+    }
+
+    .card:hover {
+      border-color: rgba(124, 92, 255, 0.5);
+      box-shadow: 0 8px 32px var(--glow);
+    }
+
+    .card.open {
+      border-color: rgba(124, 92, 255, 0.55);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 1.1rem 1.25rem;
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+    }
+
+    .card-header::-webkit-details-marker { display: none; }
+
+    .card-num {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), #5b3fd4);
+      border-radius: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .card-num.bonus {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+    }
+
+    .card-title {
+      flex: 1;
+      font-weight: 600;
+      font-size: 1.02rem;
+    }
+
+    .card-points {
+      flex-shrink: 0;
+      background: rgba(0, 212, 170, 0.12);
+      color: var(--accent2);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.3rem 0.7rem;
+      border-radius: 8px;
+    }
+
+    .card-points.bonus-pts {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+
+    .chevron {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      color: var(--muted);
+      transition: transform 0.3s;
+    }
+
+    details[open] .chevron {
+      transform: rotate(180deg);
+    }
+
+    .card-body {
+      padding: 0 1.25rem 1.25rem 1.25rem;
+      padding-left: calc(1.25rem + 38px + 0.9rem);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card-body ul {
+      list-style: none;
+      margin-top: 0.4rem;
+    }
+
+    .card-body li {
+      position: relative;
+      padding-left: 1.15rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .card-body li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .card-body p {
+      margin-bottom: 0.5rem;
+    }
+
+    .card-body strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* General requirements box */
+    .general {
+      background: linear-gradient(135deg, rgba(124, 92, 255, 0.12), rgba(0, 212, 170, 0.08));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease-out 0.15s both;
+    }
+
+    .general h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      margin-bottom: 0.75rem;
+      color: #c4b5fd;
+    }
+
+    .general ul {
+      list-style: none;
+    }
+
+    .general li {
+      position: relative;
+      padding-left: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+    }
+
+    .general li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent2);
+      font-weight: 700;
+    }
+
+    /* Footer note */
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      animation: fadeUp 0.8s ease-out 0.3s both;
+    }
+
+    footer span {
+      color: var(--accent);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Stagger animation delays via JS class */
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.2s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    .card:nth-child(6) { animation-delay: 0.3s; }
+    .card:nth-child(7) { animation-delay: 0.35s; }
+    .card:nth-child(8) { animation-delay: 0.4s; }
+    .card:nth-child(9) { animation-delay: 0.45s; }
+    .card:nth-child(10) { animation-delay: 0.5s; }
+    .card:nth-child(11) { animation-delay: 0.55s; }
+    .card:nth-child(12) { animation-delay: 0.6s; }
+    .card:nth-child(13) { animation-delay: 0.65s; }
+
+    /* Expand all / collapse */
+    .controls {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s ease-out 0.2s both;
+    }
+
+    .btn {
+      background: rgba(124, 92, 255, 0.15);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.45rem 0.95rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+
+    .btn:hover {
+      background: rgba(124, 92, 255, 0.28);
+      border-color: rgba(124, 92, 255, 0.5);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    @media (max-width: 560px) {
+      .card-body {
+        padding-left: 1.25rem;
+      }
+      .card-header {
+        gap: 0.65rem;
+      }
+      .card-num {
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-shapes" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="badge">📚 Clasa a VI-a</div>
+      <h1>Proiect PowerPoint</h1>
+      <p class="subtitle">Toate cerințele și punctajul pentru prezentarea ta – expandează fiecare card pentru detalii</p>
+    </header>
+
+    <div class="total-bar">
+      <div>
+        <div class="label">Punctaj maxim</div>
+        <div class="points">10 + 1 bonus</div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+      <div style="text-align: right;">
+        <div class="label">Cerințe</div>
+        <div class="points" style="font-size: 1.1rem;">12 + bonus</div>
+      </div>
+    </div>
+
+    <div class="general">
+      <h2>Cerințe generale</h2>
+      <ul>
+        <li>Realizați o prezentare în Microsoft PowerPoint, pe o temă aleasă de voi.</li>
+        <li>Prezentarea va avea minimum 15 diapozitive.</li>
+        <li>Respectați toate cerințele de mai jos.</li>
+        <li>La finalul prezentării, veți primi o întrebare sau o cerință de modificare pe care va trebui să o realizați direct în PowerPoint.</li>
+      </ul>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="expandAll">Deschide toate</button>
+      <button class="btn" id="collapseAll">Închide toate</button>
+    </div>
+
+    <div class="section-title">Cerințe și punctaj</div>
+
+    <div id="cards">
+      <!-- 1 -->
+      <details class="card" open>
+        <summary class="card-header">
+          <span class="card-num">1</span>
+          <span class="card-title">Primul diapozitiv</span>
+          <span class="card-points">1 punct</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <p>Primul diapozitiv va fi de tip „Titlu” și va conține:</p>
+          <ul>
+            <li>titlul proiectului;</li>
+            <li>numele și prenumele elevului;</li>
+            <li>clasa;</li>
+            <li>data, introdusă astfel încât să se actualizeze automat;</li>
+            <li>textul va fi formatat corespunzător (font, dimensiune, culoare etc.).</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 2 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">2</span>
+          <span class="card-title">Tema și aspectul prezentării</span>
+          <span class="card-points">0,5 puncte</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <ul>
+            <li>Se va aplica o temă/design prezentării.</li>
+            <li>Se vor utiliza mai multe tipuri de diapozitive, în funcție de conținut.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 3 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">3</span>
+          <span class="card-title">Formatarea textului</span>
+          <span class="card-points">1 punct</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <ul>
+            <li>Textul va fi formatat corespunzător pe parcursul prezentării.</li>
+            <li>Se vor utiliza dimensiuni și culori diferite pentru text, acolo unde este potrivit.</li>
+            <li>Pentru liste se vor utiliza buline sau numerotare.</li>
+            <li>Textul trebuie să fie ușor de citit și să nu aglomereze diapozitivele.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 4 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">4</span>
+          <span class="card-title">Conținutul prezentării</span>
+          <span class="card-points">1 punct</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <ul>
+            <li>Informațiile prezentate trebuie să fie corecte, clare și relevante pentru tema aleasă.</li>
+            <li>Nu se vor introduce mai mult de 4 propoziții pe un diapozitiv.</li>
+            <li>Se vor utiliza, acolo unde este potrivit, imagini și alte elemente vizuale.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 5 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">5</span>
+          <span class="card-title">Prezentarea orală</span>
+          <span class="card-points">1 punct</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <ul>
+            <li>Proiectul va fi prezentat în fața clasei.</li>
+            <li>Elevul va explica pe scurt conținutul diapozitivelor și va răspunde la întrebările adresate.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 6 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">6</span>
+          <span class="card-title">Tabel</span>
+          <span class="card-points">0,5 puncte</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <ul>
+            <li>Se va introduce cel puțin un tabel.</li>
+            <li>Tabelul va fi formatat corespunzător: culori, borduri, dimensiuni etc.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 7 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">7</span>
+          <span class="card-title">SmartArt</span>
+          <span class="card-points">0,5 puncte</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <ul>
+            <li>Se va introduce cel puțin un element SmartArt.</li>
+            <li>SmartArt-ul trebuie să conțină informații legate de tema prezentării.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 8 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">8</span>
+          <span class="card-title">Tranziții</span>
+          <span class="card-points">1 punct</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <ul>
+            <li>Se vor aplica tranziții tuturor diapozitivelor.</li>
+            <li>Pentru cel puțin o tranziție se va seta un timp de avansare automată, astfel încât următorul diapozitiv să apară după un interval de timp ales de voi.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 9 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">9</span>
+          <span class="card-title">Animații</span>
+          <span class="card-points">1 punct</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <ul>
+            <li>Fiecare diapozitiv va conține cel puțin o animație aplicată unui element, de exemplu: text, imagine, formă etc.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 10 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">10</span>
+          <span class="card-title">Hiperlink</span>
+          <span class="card-points">0,5 puncte</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <p>Se va introduce cel puțin un hyperlink:</p>
+          <ul>
+            <li>către o pagină web; sau</li>
+            <li>către un alt diapozitiv din prezentare.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 11 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">11</span>
+          <span class="card-title">Forme</span>
+          <span class="card-points">0,5 puncte</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <ul>
+            <li>Se vor utiliza cel puțin două forme (Shapes).</li>
+            <li>În forme se vor introduce informații legate de tema prezentării.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 12 -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num">12</span>
+          <span class="card-title">Cerință finală</span>
+          <span class="card-points">1 punct</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <p>La finalul prezentării, voi adresa o întrebare sau voi solicita realizarea unei modificări în prezentare.</p>
+        </div>
+      </details>
+
+      <!-- BONUS -->
+      <details class="card">
+        <summary class="card-header">
+          <span class="card-num bonus">★</span>
+          <span class="card-title">BONUS – Videoclip</span>
+          <span class="card-points bonus-pts">+1 punct</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="card-body">
+          <p><strong>Subiect suplimentar:</strong></p>
+          <ul>
+            <li>Se va adăuga un videoclip pe unul dintre diapozitivele prezentării.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <footer>
+      Click pe fiecare card pentru a vedea detaliile · <span>Succes la proiect!</span>
+    </footer>
+  </div>
+
+  <script>
+    // Progress animation
+    requestAnimationFrame(() => {
+      document.getElementById('progress').style.width = '100%';
+    });
+
+    // Expand / Collapse all
+    const cards = document.querySelectorAll('#cards details');
+    document.getElementById('expandAll').addEventListener('click', () => {
+      cards.forEach(c => c.open = true);
+    });
+    document.getElementById('collapseAll').addEventListener('click', () => {
+      cards.forEach(c => c.open = false);
+    });
+
+    // Visual open state
+    cards.forEach(card => {
+      card.addEventListener('toggle', () => {
+        card.classList.toggle('open', card.open);
+      });
+      if (card.open) card.classList.add('open');
+    });
+  </script>
+</body>
+</html>
