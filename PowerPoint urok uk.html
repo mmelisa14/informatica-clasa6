@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<title>PowerPoint за 30 хвилин</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: вузька колонка для читання; кожна тема має велику підписану схему; практика і тест унизу */
+:root{
+  color-scheme:light;
+  --bg:#F2F4F7; --card:#FFFFFF; --fg:#13171E; --fg2:#4A5361; --line:#D2D8E0;
+  --accent:#D04423; --accent-soft:#FBE7E1; --accent-fg:#FFFFFF;
+  --blue:#1F62D6; --blue-soft:#E3EDFC; --on-blue:#FFFFFF;
+  --good:#1D7A49; --good-soft:#E2F3E9; --on-good:#FFFFFF;
+  --bad:#B3261E; --bad-soft:#FBE6E4;
+  --font-display:"Unbounded","Onest",system-ui,sans-serif;
+  --font-body:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1217; --card:#171C24; --fg:#E8ECF2; --fg2:#A4AEBC; --line:#2C3541;
+    --accent:#FF7B57; --accent-soft:#2D1C16; --accent-fg:#1A0C07;
+    --blue:#7DAAFF; --blue-soft:#14233D; --on-blue:#0B1530;
+    --good:#5BD28F; --good-soft:#12261B; --on-good:#07210F;
+    --bad:#FF8A80; --bad-soft:#2B1615;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1217; --card:#171C24; --fg:#E8ECF2; --fg2:#A4AEBC; --line:#2C3541;
+  --accent:#FF7B57; --accent-soft:#2D1C16; --accent-fg:#1A0C07;
+  --blue:#7DAAFF; --blue-soft:#14233D; --on-blue:#0B1530;
+  --good:#5BD28F; --good-soft:#12261B; --on-good:#07210F;
+  --bad:#FF8A80; --bad-soft:#2B1615;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--fg); font-family:var(--font-body); font-size:17px; line-height:1.6;
+  padding-block:0 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.wrap{max-width:720px;margin:0 auto}
+h1,h2{font-family:var(--font-display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(1.7rem,6vw,2.5rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.3rem;font-weight:700}
+h3{font-family:var(--font-body);font-size:1rem;font-weight:700;margin:0}
+p{margin:0}
+.ro{color:var(--fg2);font-size:.82em;font-weight:500;white-space:nowrap}
+kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82em;background:var(--card);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 6px;white-space:nowrap}
+strong{font-weight:650}
+.tag{display:inline-block;font-size:.8em;font-weight:700;border-radius:6px;padding:0 7px;white-space:nowrap}
+.tag.o{background:var(--accent-soft);color:var(--accent)}
+.tag.b{background:var(--blue-soft);color:var(--blue)}
+
+.hero{padding-top:max(28px,env(safe-area-inset-top,0px));display:grid;gap:18px;padding-bottom:8px}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);color:var(--fg2);border-radius:999px;padding:4px 12px;background:var(--card)}
+.pill.hot{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.task{border-left:4px solid var(--accent);background:var(--card);padding:14px 16px;border-radius:0 10px 10px 0;font-size:1.05rem;font-weight:500}
+
+section{margin-top:48px;display:grid;gap:16px}
+.sec-label{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.def{background:var(--accent-soft);border-radius:12px;padding:14px 18px}
+.def b{color:var(--accent)}
+ul.tight{margin:0;padding-left:1.2em;display:grid;gap:6px}
+figure{margin:0;display:grid;gap:8px}
+figcaption{font-size:.85rem;color:var(--fg2)}
+.fig{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;justify-items:center}
+.fig svg{display:block;width:100%;max-width:520px;height:auto}
+
+/* svg tokens */
+.sv-card{fill:var(--card);stroke:var(--line);stroke-width:1.5}
+.sv-bg{fill:var(--bg);stroke:var(--line);stroke-width:1}
+.sv-soft{fill:var(--accent-soft)}
+.sv-acc{fill:var(--accent)}
+.sv-accs{stroke:var(--accent);fill:none;stroke-width:2.5}
+.sv-blue{fill:var(--blue)}
+.sv-bluesoft{fill:var(--blue-soft)}
+.sv-good{fill:var(--good)}
+.sv-goodsoft{fill:var(--good-soft)}
+.sv-bad{fill:var(--bad)}
+.sv-badsoft{fill:var(--bad-soft)}
+.sv-bar{fill:var(--line)}
+.sv-dash{fill:none;stroke:var(--fg2);stroke-width:1.4;stroke-dasharray:4 3}
+.sv-ln{stroke:var(--fg2);stroke-width:1.4;fill:none}
+.sv-lnA{stroke:var(--accent);stroke-width:2;fill:none}
+.t{font:600 12px var(--font-body);fill:var(--fg)}
+.t2{font:500 11px var(--font-body);fill:var(--fg2)}
+.tb{font:700 11px var(--font-body);fill:var(--accent-fg)}
+.tbl-b{font:700 11px var(--font-body);fill:var(--on-blue)}
+.tbl-g{font:700 11px var(--font-body);fill:var(--on-good)}
+.tbd{font:700 11px var(--font-body);fill:var(--accent-fg)}
+.tbig{font:700 16px var(--font-body);fill:var(--fg)}
+.mid{text-anchor:middle}
+
+.legend{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin:0;padding:0;list-style:none}
+.legend li{display:flex;gap:10px;align-items:flex-start;font-size:.95rem}
+.num{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-fg);font-weight:700;font-size:.8rem;display:grid;place-items:center;margin-top:1px}
+
+.chips{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:2px}
+.chip b{font-size:.95rem}
+.chip span{font-size:.86rem;color:var(--fg2)}
+.chip.key{border-color:var(--accent);background:var(--accent-soft)}
+.chip.key b{color:var(--accent)}
+
+.cmp{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.cmp .card{display:grid;gap:8px;align-content:start}
+.cmp .a{border-top:4px solid var(--blue)}
+.cmp .b{border-top:4px solid var(--accent)}
+.cmp .card p{font-size:.93rem;color:var(--fg2)}
+
+.ins{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.ins .it{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:6px;justify-items:start}
+.ins svg{width:44px;height:44px}
+.ins b{font-size:.95rem}
+.ins span{font-size:.8rem;color:var(--fg2);line-height:1.35}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:340px;font-size:.93rem}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2);font-weight:700}
+
+
+.quiz-head{margin-top:56px;border-top:2px solid var(--fg);padding-top:20px;display:grid;gap:10px}
+.progress{display:flex;align-items:center;gap:12px;font-size:.9rem;font-weight:600;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:10px;z-index:2}
+.bar{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.q{display:grid;gap:12px;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.q .qn{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg2);font-weight:700}
+.q .qt{font-weight:650;font-size:1.05rem;line-height:1.4}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;text-align:left;color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;min-height:46px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:focus-visible,.btn:focus-visible,.opt .l{flex:none;font-weight:700;color:var(--fg2);width:1.1em}
+.opt.ok{background:var(--good-soft);border-color:var(--good)}
+.opt.no{background:var(--bad-soft);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.fb{font-size:.92rem;color:var(--fg2);display:none}
+.q.done .fb{display:block}
+.result{display:none;background:var(--fg);color:var(--bg);border-radius:14px;padding:22px;gap:10px}
+.result.show{display:grid}
+.result .big{font-family:var(--font-display);font-size:2.2rem;font-weight:700}
+.btn{font:inherit;font-weight:650;border:0;border-radius:10px;padding:11px 18px;background:var(--accent);color:var(--accent-fg);cursor:pointer;justify-self:start;min-height:44px}
+footer{margin-top:40px;font-size:.85rem;color:var(--fg2)}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+.q.right{border-color:var(--good)} .q.wrong{border-color:var(--bad)}
+.opts.tf{grid-template-columns:1fr 1fr}
+.clickbox{display:grid;justify-items:center}
+.clickbox svg{width:100%;max-width:440px;height:auto}
+.rg{cursor:pointer;outline:none}
+.rg .hit{fill:var(--accent);fill-opacity:0}
+.rg:hover .hit,.rg:focus-visible .hit{fill-opacity:.16;stroke:var(--accent);stroke-width:2}
+.rg .hit.ok{fill:var(--good);fill-opacity:.4;stroke:var(--good);stroke-width:2}
+.rg .hit.no{fill:var(--bad);fill-opacity:.4;stroke:var(--bad);stroke-width:2}
+.q.done .rg{pointer-events:none}
+.sortbox{display:grid;gap:10px}
+.srow{display:grid;gap:8px;grid-template-columns:1fr auto;align-items:center;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg)}
+.srow.rok{border-color:var(--good);background:var(--good-soft)} .srow.rno{border-color:var(--bad);background:var(--bad-soft)}
+.stxt{font-size:.95rem;min-width:0}
+.sbtns{display:flex;gap:6px}
+.mini{font:inherit;font-size:.85rem;font-weight:600;border:1.5px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:7px 10px;cursor:pointer;min-height:40px}
+.mini.sel{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.mini:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.mini:disabled{cursor:default}
+.btn:disabled{opacity:.45;cursor:default}
+@media (max-width:480px){.srow{grid-template-columns:1fr}}
+.result .gl{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.8}
+.result .big small{font-size:1rem;font-weight:500;opacity:.7}
+.result .big{font-size:3rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="pill-row">
+    <span class="pill hot">Інформатика · 6 клас</span>
+    <span class="pill">≈ 30 хв</span>
+    <span class="pill">читання → тест</span>
+  </div>
+  <h1>Презентації в PowerPoint</h1>
+  <p class="task">Прочитай уважно матеріал, а в кінці розв’яжи вправи.</p>
+  <p style="color:var(--fg2);font-size:.92rem">Біля важливих слів у дужках стоїть румунська назва, бо саме її ти побачиш у програмі. Малюнки на сторінці схематичні.</p>
+</header>
+
+<!-- 1 -->
+<section>
+  <div class="sec-label">Частина 1</div>
+  <h2>PowerPoint і файл .pptx</h2>
+  <div class="def">
+    <p><b>PowerPoint</b> — це <strong>робоче середовище</strong> (програма), у якому створюють і показують презентації. Презентація зберігається у <strong>файлі</strong> з розширенням <strong>.pptx</strong>.</p>
+  </div>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 400 200" role="img" aria-label="Файл презентації: значок, назва і розширення .pptx">
+        <!-- file icon -->
+        <path d="M30 30 h58 l26 26 v116 a6 6 0 0 1 -6 6 h-78 a6 6 0 0 1 -6 -6 v-136 a6 6 0 0 1 6 -6z" class="sv-card"/>
+        <path d="M88 30 v26 h26" class="sv-bar" style="stroke:var(--line);stroke-width:1.5;fill:var(--bg)"/>
+        <rect x="40" y="70" width="64" height="40" rx="3" class="sv-soft"/>
+        <rect x="46" y="78" width="34" height="6" rx="2" class="sv-acc"/>
+        <rect x="46" y="90" width="48" height="4" rx="2" class="sv-bar"/>
+        <rect x="46" y="98" width="40" height="4" rx="2" class="sv-bar"/>
+        <rect x="24" y="140" width="90" height="30" rx="5" class="sv-acc"/>
+        <text x="69" y="160" class="tb mid" style="font-size:14px">.pptx</text>
+        <!-- label icon -->
+        <text x="130" y="34" class="t2">значок PowerPoint</text>
+        <path d="M128 38 L106 62" class="sv-ln"/>
+        <!-- filename bar -->
+        <rect x="140" y="76" width="250" height="44" rx="8" class="sv-card"/>
+        <text x="152" y="105" class="tbig" textLength="124" lengthAdjust="spacingAndGlyphs">Моя_презентація</text>
+        <text x="278" y="105" class="tbig" style="fill:var(--accent)" textLength="52" lengthAdjust="spacingAndGlyphs">.pptx</text>
+        <!-- brackets -->
+        <path d="M152 128 v6 h124 v-6" class="sv-ln"/>
+        <path d="M280 128 v6 h50 v-6" class="sv-lnA"/>
+        <text x="214" y="150" class="t mid">назва файлу</text>
+        <text x="305" y="150" class="t mid" style="fill:var(--accent)">розширення</text>
+        <text x="140" y="182" class="t2">Розширення каже комп’ютеру, що файл відкриває PowerPoint.</text>
+      </svg>
+    </div>
+    <figcaption>Файл презентації складається з назви та розширення .pptx.</figcaption>
+  </figure>
+  <p>Запуск: меню <strong>Пуск</strong> → <strong>PowerPoint</strong>, або введи слово «PowerPoint» і натисни <kbd>Enter</kbd>. Обери «Нова порожня презентація» <span class="ro">(Prezentare necompletată)</span>.</p>
+</section>
+
+<!-- 2 -->
+<section>
+  <div class="sec-label">Частина 2</div>
+  <h2>Слайди й об’єкти</h2>
+  <div class="def">
+    <p>Презентація складається зі <b>слайдів</b> <span class="ro">(slide-uri / diapozitive)</span>. Слайд — це окремий «аркуш» презентації. На слайді розташовані <b>об’єкти</b>: текст, зображення, фігури, таблиці.</p>
+  </div>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 400 350" role="img" aria-label="Ряд слайдів і один великий слайд з підписаними об’єктами">
+        <text x="16" y="22" class="t">Презентація — це ряд слайдів</text>
+        <g>
+          <rect x="16" y="34" width="80" height="46" rx="4" class="sv-bg"/><rect x="24" y="44" width="40" height="6" rx="2" class="sv-bar"/>
+          <rect x="108" y="34" width="80" height="46" rx="4" class="sv-card" style="stroke:var(--accent);stroke-width:3"/><rect x="116" y="44" width="40" height="6" rx="2" class="sv-acc"/>
+          <rect x="200" y="34" width="80" height="46" rx="4" class="sv-bg"/><rect x="208" y="44" width="40" height="6" rx="2" class="sv-bar"/>
+          <rect x="292" y="34" width="80" height="46" rx="4" class="sv-bg"/><rect x="300" y="44" width="40" height="6" rx="2" class="sv-bar"/>
+        </g>
+        <text x="56" y="98" class="t2 mid">слайд 1</text>
+        <text x="148" y="98" class="t mid" style="fill:var(--accent)">слайд 2</text>
+        <text x="240" y="98" class="t2 mid">слайд 3</text>
+        <text x="332" y="98" class="t2 mid">слайд 4</text>
+        <path d="M148 104 v14" class="sv-lnA"/><path d="M142 112 l6 8 l6 -8" class="sv-lnA"/>
+        <!-- big slide -->
+        <rect x="40" y="126" width="320" height="196" rx="6" class="sv-card" style="stroke-width:2"/>
+        <rect x="60" y="150" width="190" height="30" rx="3" class="sv-dash"/>
+        <text x="72" y="170" class="tbig" style="font-size:15px">Мої улюблені тварини</text>
+        <rect x="60" y="198" width="120" height="6" rx="3" class="sv-bar"/>
+        <rect x="60" y="212" width="100" height="6" rx="3" class="sv-bar"/>
+        <rect x="60" y="226" width="110" height="6" rx="3" class="sv-bar"/>
+        <rect x="224" y="200" width="116" height="90" rx="3" class="sv-bluesoft" style="stroke:var(--blue);stroke-width:1.4"/>
+        <path d="M224 290 l34 -46 l24 28 l16 -16 l42 34z" class="sv-blue" style="opacity:.75"/>
+        <circle cx="318" cy="222" r="9" class="sv-acc" style="opacity:.85"/>
+        <circle cx="86" cy="284" r="20" class="sv-acc"/>
+        <!-- pills -->
+        <rect x="50" y="138" width="92" height="18" rx="9" class="sv-acc"/><text x="96" y="151" class="tb mid">текст (поле)</text>
+        <rect x="232" y="188" width="86" height="18" rx="9" class="sv-blue"/><text x="275" y="201" class="tbl-b mid">зображення</text>
+        <rect x="108" y="276" width="56" height="18" rx="9" class="sv-good"/><text x="136" y="289" class="tbl-g mid">фігура</text>
+        <path d="M108 285 h0" class="sv-ln"/>
+        <text x="200" y="338" class="t2 mid">один слайд = кілька об’єктів</text>
+      </svg>
+    </div>
+    <figcaption>Угорі — слайди презентації, внизу — слайд 2 з трьома об’єктами.</figcaption>
+  </figure>
+  <p>Кожен об’єкт можна рухати, збільшувати, змінювати. Саме до об’єктів потім застосовують <strong>анімацію</strong>.</p>
+</section>
+
+<!-- 3 -->
+<section>
+  <div class="sec-label">Частина 3</div>
+  <h2>Вікно PowerPoint</h2>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 400 330" role="img" aria-label="Схема вікна PowerPoint з підписаними частинами">
+        <rect x="6" y="6" width="388" height="318" rx="10" class="sv-card" style="stroke-width:2"/>
+        <!-- 1 title bar -->
+        <rect x="7" y="7" width="386" height="28" rx="9" class="sv-soft"/>
+        <rect x="14" y="12" width="142" height="18" rx="9" class="sv-acc"/><text x="85" y="25" class="tb mid">1 · Рядок заголовка</text>
+        <text x="300" y="25" class="t2 mid">Презентація1 — PowerPoint</text>
+        <!-- 2 ribbon -->
+        <rect x="7" y="36" width="386" height="62" class="sv-bg"/>
+        <text x="14" y="52" class="t2" style="font-size:10px">Файл</text><text x="48" y="52" class="t2" style="font-size:10px;fill:var(--accent);font-weight:700">Основне</text><text x="100" y="52" class="t2" style="font-size:10px">Вставлення</text><text x="166" y="52" class="t2" style="font-size:10px">Конструктор</text><text x="238" y="52" class="t2" style="font-size:10px">Переходи</text><text x="294" y="52" class="t2" style="font-size:10px">Анімація</text><text x="344" y="52" class="t2" style="font-size:10px">…</text>
+        <rect x="150" y="62" width="60" height="28" rx="4" class="sv-bar"/><rect x="218" y="62" width="80" height="28" rx="4" class="sv-bar"/><rect x="306" y="62" width="80" height="28" rx="4" class="sv-bar"/>
+        <rect x="14" y="66" width="130" height="20" rx="10" class="sv-acc"/><text x="79" y="80" class="tb mid">2 · Стрічка з вкладками</text>
+        <!-- 4 thumbs -->
+        <rect x="7" y="99" width="100" height="190" class="sv-bg"/>
+        <rect x="18" y="108" width="78" height="44" rx="3" class="sv-card" style="stroke:var(--accent);stroke-width:2.5"/><rect x="24" y="116" width="36" height="5" rx="2" class="sv-acc"/>
+        <rect x="18" y="158" width="78" height="44" rx="3" class="sv-card"/><rect x="24" y="166" width="36" height="5" rx="2" class="sv-bar"/>
+        <rect x="18" y="208" width="78" height="44" rx="3" class="sv-card"/><rect x="24" y="216" width="36" height="5" rx="2" class="sv-bar"/>
+        <rect x="16" y="262" width="84" height="20" rx="10" class="sv-acc"/><text x="58" y="276" class="tb mid">4 · Ескізи</text>
+        <!-- 6 slide area -->
+        <rect x="108" y="99" width="285" height="128" class="sv-bg" style="stroke:none"/>
+        <rect x="132" y="108" width="236" height="110" rx="3" class="sv-card"/>
+        <rect x="146" y="120" width="120" height="12" rx="3" class="sv-bar" style="fill:var(--fg2);opacity:.55"/>
+        <rect x="146" y="140" width="150" height="5" rx="2" class="sv-bar"/>
+        <rect x="146" y="150" width="130" height="5" rx="2" class="sv-bar"/>
+        <rect x="146" y="160" width="140" height="5" rx="2" class="sv-bar"/>
+        <rect x="190" y="188" width="140" height="20" rx="10" class="sv-acc"/><text x="260" y="202" class="tb mid">6 · Область слайда</text>
+        <!-- 5 notes -->
+        <rect x="108" y="228" width="285" height="61" class="sv-card" style="stroke-width:1"/>
+        <rect x="116" y="236" width="94" height="20" rx="10" class="sv-acc"/><text x="163" y="250" class="tb mid">5 · Нотатки</text>
+        <text x="116" y="274" class="t2">Текст для доповідача. Публіка його не бачить.</text>
+        <!-- 3 status -->
+        <rect x="7" y="290" width="386" height="33" rx="9" class="sv-soft"/>
+        <rect x="14" y="297" width="122" height="20" rx="10" class="sv-acc"/><text x="75" y="311" class="tb mid">3 · Рядок стану</text>
+        <text x="148" y="311" class="t2">Слайд 1 з 3</text><text x="214" y="311" class="t2">Українська</text>
+        <rect x="316" y="305" width="64" height="4" rx="2" class="sv-bar"/><circle cx="352" cy="307" r="5" class="sv-acc"/>
+      </svg>
+    </div>
+    <figcaption>Схема вікна. Номери збігаються зі списком нижче.</figcaption>
+  </figure>
+  <ol class="legend">
+    <li><span class="num">1</span><span><strong>Рядок заголовка</strong> <span class="ro">(Bara de titlu)</span>: назва файлу, кнопка збереження.</span></li>
+    <li><span class="num">2</span><span><strong>Стрічка</strong> <span class="ro">(Panglica)</span>: усі команди, розкладені по вкладках.</span></li>
+    <li><span class="num">3</span><span><strong>Рядок стану</strong> <span class="ro">(Bara de status)</span>: номер слайда, мова, масштаб.</span></li>
+    <li><span class="num">4</span><span><strong>Панель ескізів</strong> <span class="ro">(Panoul de miniaturi)</span>: маленькі копії всіх слайдів.</span></li>
+    <li><span class="num">5</span><span><strong>Нотатки</strong> <span class="ro">(Panoul de note)</span>: текст лише для доповідача.</span></li>
+    <li><span class="num">6</span><span><strong>Область слайда</strong> <span class="ro">(Panoul diapozitiv)</span>: тут редагуємо поточний слайд.</span></li>
+  </ol>
+</section>
+
+<!-- 4 -->
+<section>
+  <div class="sec-label">Частина 4</div>
+  <h2>Вкладки стрічки</h2>
+  <p>Команди в PowerPoint зібрані у вкладки. Найважливіші виділено кольором.</p>
+  <div class="chips">
+    <div class="chip"><b>Файл <span class="ro">(Fișier)</span></b><span>створити, відкрити, зберегти</span></div>
+    <div class="chip"><b>Основне <span class="ro">(Pornire)</span></b><span>новий слайд, шрифт, абзац</span></div>
+    <div class="chip key"><b>Вставлення <span class="ro">(Inserare)</span></b><span>текст, зображення, фігури, таблиці, звук, відео</span></div>
+    <div class="chip"><b>Конструктор <span class="ro">(Proiectare)</span></b><span>тема, кольори, розмір слайда</span></div>
+    <div class="chip key"><b>Переходи <span class="ro">(Tranziții)</span></b><span>як слайд змінюється іншим</span></div>
+    <div class="chip key"><b>Анімація <span class="ro">(Animații)</span></b><span>рух об’єктів на слайді</span></div>
+    <div class="chip"><b>Показ слайдів <span class="ro">(Expunere diapozitive)</span></b><span>запуск показу</span></div>
+    <div class="chip"><b>Рецензування <span class="ro">(Revizuire)</span></b><span>перевірка правопису</span></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section>
+  <div class="sec-label">Частина 5 · найважливіше</div>
+  <h2>Перехід чи анімація?</h2>
+  <p>Це дві різні речі. Їх легко сплутати, тому розгляньмо на малюнку.</p>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 400 410" role="img" aria-label="Перехід діє між двома слайдами, анімація діє на об’єктах усередині слайда">
+        <!-- transition panel -->
+        <rect x="8" y="8" width="384" height="176" rx="10" class="sv-card"/>
+        <rect x="20" y="18" width="200" height="22" rx="11" class="sv-blue"/><text x="120" y="33" class="tbl-b mid">ПЕРЕХІД · між слайдами</text>
+        <rect x="28" y="62" width="104" height="60" rx="4" class="sv-bg"/><rect x="38" y="74" width="48" height="7" rx="2" class="sv-bar"/><rect x="38" y="88" width="64" height="5" rx="2" class="sv-bar"/>
+        <text x="80" y="140" class="t mid">слайд 2</text>
+        <rect x="268" y="62" width="104" height="60" rx="4" class="sv-bg"/><rect x="278" y="74" width="48" height="7" rx="2" class="sv-bar"/><rect x="278" y="88" width="64" height="5" rx="2" class="sv-bar"/>
+        <text x="320" y="140" class="t mid">слайд 3</text>
+        <path d="M142 92 h116" class="sv-ln" style="stroke:var(--blue);stroke-width:3"/><path d="M248 84 l12 8 l-12 8" style="stroke:var(--blue);stroke-width:3;fill:none"/>
+        <text x="200" y="80" class="t mid" style="fill:var(--blue)">ефект «Зникнення»</text>
+        <text x="200" y="110" class="t2 mid">змінюється весь слайд</text>
+        <text x="20" y="172" class="t2">вкладка «Переходи»</text>
+        <!-- animation panel -->
+        <rect x="8" y="196" width="384" height="206" rx="10" class="sv-card"/>
+        <rect x="20" y="206" width="230" height="22" rx="11" class="sv-acc"/><text x="135" y="221" class="tb mid">АНІМАЦІЯ · на об’єктах слайда</text>
+        <rect x="110" y="244" width="180" height="116" rx="4" class="sv-bg"/>
+        <rect x="122" y="254" width="104" height="24" rx="3" class="sv-dash"/><text x="132" y="271" class="t">Заголовок</text>
+        <rect x="204" y="292" width="72" height="58" rx="3" class="sv-bluesoft" style="stroke:var(--blue);stroke-width:1.4"/>
+        <path d="M204 350 l24 -30 l16 18 l10 -10 l22 22z" class="sv-blue" style="opacity:.75"/>
+        <!-- order badges -->
+        <rect x="100" y="250" width="18" height="18" rx="3" class="sv-acc"/><text x="109" y="263" class="tb mid">1</text>
+        <rect x="194" y="288" width="18" height="18" rx="3" class="sv-acc"/><text x="203" y="301" class="tb mid">2</text>
+        <!-- side labels -->
+        <text x="16" y="262" class="t">1 текст:</text><text x="16" y="278" class="t2">ефект «Поява»</text>
+        <path d="M70 284 L100 262" class="sv-ln" style="display:none"/>
+        <text x="300" y="316" class="t">2 зображення:</text><text x="300" y="332" class="t2">ефект «Наліт»</text>
+        <path d="M296 322 L278 322" class="sv-ln"/>
+        <text x="20" y="390" class="t2">вкладка «Анімація»: кожен об’єкт рухається окремо</text>
+      </svg>
+    </div>
+    <figcaption>Угорі — перехід між слайдами, внизу — анімація об’єктів усередині одного слайда.</figcaption>
+  </figure>
+  <div class="cmp">
+    <div class="card a">
+      <h3>Перехід <span class="ro">(tranziție)</span></h3>
+      <p>Діє <strong>між слайдами</strong>: показує, як з’являється наступний слайд. Вкладка <span class="tag b">Переходи</span>. Один ефект можна застосувати до всіх слайдів.</p>
+    </div>
+    <div class="card b">
+      <h3>Анімація <span class="ro">(animație)</span></h3>
+      <p>Діє <strong>на тексті чи зображенні</strong> всередині слайда: об’єкт з’являється, рухається, зникає. Вкладка <span class="tag o">Анімація</span>. Спочатку виділи об’єкт, потім обери ефект.</p>
+    </div>
+  </div>
+  <div class="card"><strong>Як запам’ятати:</strong> перехід — «між», анімація — «на». Перехід між слайдами, анімація на тексті чи картинці.</div>
+</section>
+
+<!-- 6 -->
+<section>
+  <div class="sec-label">Частина 6</div>
+  <h2>Що можна вставити на слайд</h2>
+  <p>Усе додається у вкладці <span class="tag o">Вставлення</span>.</p>
+  <div class="ins">
+    <div class="it"><svg viewBox="0 0 44 44"><rect x="4" y="8" width="36" height="28" rx="3" class="sv-bg"/><text x="22" y="29" class="tbig mid" style="font-size:20px;fill:var(--accent)">T</text></svg><b>Текстове поле</b><span>Text box</span></div>
+    <div class="it"><svg viewBox="0 0 44 44"><rect x="4" y="6" width="36" height="32" rx="3" class="sv-bluesoft" style="stroke:var(--blue);stroke-width:1.5"/><path d="M4 38 l12 -16 l8 10 l6 -6 l10 12z" class="sv-blue"/><circle cx="31" cy="15" r="4" class="sv-acc"/></svg><b>Зображення</b><span>Imagini</span></div>
+    <div class="it"><svg viewBox="0 0 44 44"><circle cx="15" cy="17" r="10" class="sv-acc"/><rect x="20" y="20" width="20" height="18" rx="2" class="sv-blue"/></svg><b>Фігури</b><span>Forme</span></div>
+    <div class="it"><svg viewBox="0 0 44 44"><rect x="4" y="8" width="36" height="28" rx="2" class="sv-card"/><path d="M4 18 h36 M4 27 h36 M16 8 v28 M28 8 v28" class="sv-ln"/></svg><b>Таблиця</b><span>Tabel</span></div>
+    <div class="it"><svg viewBox="0 0 44 44"><path d="M8 17 h8 l10 -9 v28 l-10 -9 h-8z" class="sv-good"/><path d="M31 15 q6 7 0 14 M35 11 q10 11 0 22" class="sv-ln"/></svg><b>Звук</b><span>Audio</span></div>
+    <div class="it"><svg viewBox="0 0 44 44"><rect x="4" y="8" width="36" height="28" rx="4" class="sv-card"/><path d="M18 15 l12 7 l-12 7z" class="sv-acc"/></svg><b>Відео</b><span>Video</span></div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Дія</th><th>Клавіші</th></tr></thead>
+    <tbody>
+      <tr><td>Новий слайд</td><td><kbd>Ctrl</kbd>+<kbd>M</kbd></td></tr>
+      <tr><td>Зберегти</td><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td></tr>
+      <tr><td>Скасувати дію</td><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td></tr>
+      <tr><td>Показ з початку</td><td><kbd>F5</kbd></td></tr>
+      <tr><td>Вийти з показу</td><td><kbd>Esc</kbd></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 7 -->
+<section>
+  <div class="sec-label">Частина 7</div>
+  <h2>Гарний слайд</h2>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 400 235" role="img" aria-label="Порівняння поганого і гарного слайда">
+        <rect x="14" y="10" width="84" height="20" rx="10" class="sv-bad"/><text x="56" y="24" class="tbd mid">Погано</text>
+        <rect x="206" y="10" width="84" height="20" rx="10" class="sv-good"/><text x="248" y="24" class="tbl-g mid">Добре</text>
+        <!-- bad slide -->
+        <rect x="14" y="38" width="180" height="104" rx="4" class="sv-card" style="stroke:var(--bad);stroke-width:2"/>
+        <rect x="22" y="46" width="60" height="5" rx="2" class="sv-bar"/>
+        <g class="sv-bar"><rect x="22" y="58" width="164" height="3" rx="1"/><rect x="22" y="65" width="160" height="3" rx="1"/><rect x="22" y="72" width="166" height="3" rx="1"/><rect x="22" y="79" width="150" height="3" rx="1"/><rect x="22" y="86" width="164" height="3" rx="1"/><rect x="22" y="93" width="158" height="3" rx="1"/><rect x="22" y="100" width="164" height="3" rx="1"/><rect x="22" y="107" width="140" height="3" rx="1"/><rect x="22" y="114" width="164" height="3" rx="1"/></g>
+        <circle cx="30" cy="130" r="5" fill="#e11d48"/><circle cx="46" cy="130" r="5" fill="#f59e0b"/><circle cx="62" cy="130" r="5" fill="#10b981"/><circle cx="78" cy="130" r="5" fill="#3b82f6"/><circle cx="94" cy="130" r="5" fill="#a855f7"/>
+        <!-- good slide -->
+        <rect x="206" y="38" width="180" height="104" rx="4" class="sv-card" style="stroke:var(--good);stroke-width:2"/>
+        <rect x="218" y="50" width="100" height="12" rx="3" class="sv-acc"/>
+        <circle cx="222" cy="80" r="3.5" class="sv-acc"/><rect x="232" y="77" width="60" height="6" rx="3" class="sv-bar"/>
+        <circle cx="222" cy="96" r="3.5" class="sv-acc"/><rect x="232" y="93" width="50" height="6" rx="3" class="sv-bar"/>
+        <circle cx="222" cy="112" r="3.5" class="sv-acc"/><rect x="232" y="109" width="56" height="6" rx="3" class="sv-bar"/>
+        <rect x="312" y="74" width="62" height="56" rx="3" class="sv-bluesoft" style="stroke:var(--blue);stroke-width:1.2"/>
+        <path d="M312 130 l20 -26 l14 16 l8 -8 l20 18z" class="sv-blue" style="opacity:.75"/>
+        <!-- notes -->
+        <text x="14" y="168" class="t">• дуже багато тексту</text>
+        <text x="14" y="186" class="t">• дрібні літери</text>
+        <text x="14" y="204" class="t">• п’ять кольорів</text>
+        <text x="206" y="168" class="t">• до 40 слів</text>
+        <text x="206" y="186" class="t">• шрифт від 18</text>
+        <text x="206" y="204" class="t">• до 3 кольорів</text>
+        <text x="14" y="226" class="t2">Нічого не виходить за межі слайда, а текст читається здалеку.</text>
+      </svg>
+    </div>
+    <figcaption>Ліворуч слайд, який важко читати. Праворуч — зрозумілий слайд.</figcaption>
+  </figure>
+  <ul class="tight">
+    <li>На слайді <strong>не більше 40 слів</strong>, розмір шрифту <strong>від 18</strong>.</li>
+    <li><strong>Не більше 3 шрифтів і 3 кольорів</strong>, добрий контраст тексту й фону.</li>
+    <li>Переходи прості й однакові на всіх слайдах.</li>
+    <li>Перший слайд: назва, автор, дата. Останній слайд: «Дякую!».</li>
+    <li>Під час виступу <strong>не читай із слайдів</strong>, а розповідай своїми словами.</li>
+  </ul>
+</section>
+
+<!-- QUIZ -->
+<div class="quiz-head">
+  <div class="sec-label">Вправи</div>
+  <h2 id="qtitle">Тест</h2>
+  <p style="color:var(--fg2);font-size:.95rem">Різні завдання: вибір, правда чи ні, клік на малюнку й розподіл. Усі з цього матеріалу. Після тесту отримаєш оцінку.</p>
+</div>
+<div class="progress"><span id="pc">0 / 0</span><div class="bar"><i id="pb"></i></div></div>
+<div id="quiz" style="display:grid;gap:14px"></div>
+<div class="result" id="res" aria-live="polite">
+  <div class="gl">Твоя оцінка</div>
+  <div class="big"><span id="grade"></span><small> / 10</small></div>
+  <p id="brk"></p>
+  <p id="msg"></p>
+  <button class="btn" id="again" type="button">Пройти ще раз</button>
+</div>
+
+<footer>Урок за матеріалами: «Prezentări electronice & Microsoft PowerPoint», Informatică, clasa a VI-a.</footer>
+</div>
+
+<script>
+var Q=[
+ {t:'choice',q:"Що таке PowerPoint?",o:["Браузер для інтернету","Робоче середовище для створення презентацій","Програма для підрахунку таблиць","Гра на комп’ютері"],a:1,e:"PowerPoint — робоче середовище, у якому створюють і показують презентації."},
+ {t:'tf',q:"Розширення .pptx мають файли презентацій PowerPoint.",a:true,e:"Так, файл презентації має розширення .pptx."},
+ {t:'choice',q:"Як називаються окремі «аркуші» презентації?",o:["Вкладки","Слайди","Стрічки","Нотатки"],a:1,e:"Презентація складається зі слайдів."},
+ {t:'click',q:"Знайди на малюнку панель ескізів і натисни на неї.",r:'thumbs',e:"Панель ескізів ліворуч: у ній маленькі копії всіх слайдів."},
+ {t:'choice',q:"У якій вкладці можна додати зображення на слайд?",o:["Анімація","Вставлення","Переходи","Файл"],a:1,e:"Усі об’єкти (зображення, фігури, таблиці, звук, відео) додають у вкладці «Вставлення»."},
+ {t:'sort',q:"Це перехід чи анімація? Познач кожне твердження.",items:[
+   {s:"Слайд 2 змінюється слайдом 3.",a:'p'},
+   {s:"Картинка з’являється на слайді.",a:'a'},
+   {s:"Заголовок вилітає зліва.",a:'a'},
+   {s:"Ефект «Зникнення» між двома слайдами.",a:'p'}],
+   e:"Перехід діє між слайдами (вкладка «Переходи»). Анімація діє на тексті чи зображенні всередині слайда (вкладка «Анімація»)."},
+ {t:'tf',q:"Анімація визначає, як один слайд змінюється наступним.",a:false,e:"Ні. Це робить перехід. Анімація рухає об’єкти на самому слайді."},
+ {t:'choice',q:"Яка клавіша запускає показ презентації з початку?",o:["F5","Esc","Ctrl+S","Ctrl+Z"],a:0,e:"F5 — показ з початку, Esc — вихід із показу."},
+ {t:'click',q:"Де PowerPoint показує номер поточного слайда? Натисни на цю частину вікна.",r:'status',e:"Номер слайда (наприклад, «Слайд 1 з 3») видно в рядку стану внизу."},
+ {t:'choice',q:"Яке сполучення клавіш додає новий слайд?",o:["Ctrl+S","Ctrl+Z","F5","Ctrl+M"],a:3,e:"Ctrl+M додає новий слайд."},
+ {t:'choice',q:"Яке правило гарного слайда правильне?",o:["Не менше 200 слів","Шрифт 8 і 9 розміру","До 40 слів, шрифт від 18, до 3 кольорів","П’ять різних шрифтів"],a:2,e:"На слайді до 40 слів, шрифт від 18, до 3 кольорів і 3 шрифтів."},
+ {t:'tf',q:"Під час виступу найкраще читати текст зі слайдів.",a:false,e:"Ні. Розповідай своїми словами й дивись на слухачів."}
+];
+var TYPE={choice:'Вибір',tf:'Правда чи ні',click:'Знайди на малюнку',sort:'Розподіли'};
+var N=Q.length,answered=0,correct=0,L=['А','Б','В','Г'];
+var box=document.getElementById('quiz');
+document.getElementById('qtitle').textContent='Тест: '+N+' запитань';
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function fmt(x){return (Math.round(x*100)/100).toFixed(2).replace('.',',')}
+function el(tag,cls,txt){var d=document.createElement(tag);if(cls)d.className=cls;if(txt!==undefined)d.textContent=txt;return d}
+
+function winSvg(){
+  var R=[
+   ['title','<rect x="7" y="7" width="386" height="28" rx="9" class="sv-soft"/><text x="200" y="25" class="t2 mid">Презентація1 — PowerPoint</text>','7','7','386','28'],
+   ['ribbon','<rect x="7" y="36" width="386" height="62" class="sv-bg"/><text x="14" y="52" class="t2" style="font-size:10px">Файл   Основне   Вставлення   Конструктор   Переходи   Анімація</text><rect x="14" y="62" width="70" height="28" rx="4" class="sv-bar"/><rect x="92" y="62" width="110" height="28" rx="4" class="sv-bar"/><rect x="210" y="62" width="90" height="28" rx="4" class="sv-bar"/>','7','36','386','62'],
+   ['thumbs','<rect x="7" y="99" width="100" height="190" class="sv-bg"/><rect x="18" y="108" width="78" height="44" rx="3" class="sv-card" style="stroke:var(--accent);stroke-width:2.5"/><rect x="24" y="116" width="36" height="5" rx="2" class="sv-acc"/><rect x="18" y="158" width="78" height="44" rx="3" class="sv-card"/><rect x="24" y="166" width="36" height="5" rx="2" class="sv-bar"/><rect x="18" y="208" width="78" height="44" rx="3" class="sv-card"/><rect x="24" y="216" width="36" height="5" rx="2" class="sv-bar"/>','7','99','100','190'],
+   ['slide','<rect x="108" y="99" width="285" height="128" class="sv-bg" style="stroke:none"/><rect x="132" y="108" width="236" height="110" rx="3" class="sv-card"/><rect x="146" y="120" width="120" height="12" rx="3" class="sv-bar" style="fill:var(--fg2);opacity:.55"/><rect x="146" y="140" width="150" height="5" rx="2" class="sv-bar"/><rect x="146" y="150" width="130" height="5" rx="2" class="sv-bar"/><rect x="146" y="160" width="140" height="5" rx="2" class="sv-bar"/>','108','99','285','128'],
+   ['notes','<rect x="108" y="228" width="285" height="61" class="sv-card" style="stroke-width:1"/><rect x="118" y="240" width="150" height="5" rx="2" class="sv-bar"/><rect x="118" y="252" width="120" height="5" rx="2" class="sv-bar"/>','108','228','285','61'],
+   ['status','<rect x="7" y="290" width="386" height="33" rx="9" class="sv-soft"/><text x="16" y="311" class="t2">Слайд 1 з 3</text><text x="90" y="311" class="t2">Українська</text><rect x="316" y="305" width="64" height="4" rx="2" class="sv-bar"/><circle cx="352" cy="307" r="5" class="sv-acc"/>','7','290','386','33']
+  ];
+  var s='<svg viewBox="0 0 400 330" role="group" aria-label="Схема вікна PowerPoint"><rect x="6" y="6" width="388" height="318" rx="10" class="sv-card" style="stroke-width:2"/>';
+  R.forEach(function(r,i){
+    s+='<g class="rg" data-r="'+r[0]+'" tabindex="0" role="button" aria-label="Зона '+(i+1)+'">'+r[1]+'<rect class="hit" x="'+r[2]+'" y="'+r[3]+'" width="'+r[4]+'" height="'+r[5]+'"/></g>';
+  });
+  return s+'</svg>';
+}
+
+function finishQ(card,ok,it){
+  card.classList.add('done',ok?'right':'wrong');
+  card.querySelector('.fb').textContent=(ok?'Правильно! ':'Неправильно. ')+it.e;
+  if(ok)correct++;
+  answered++;upd();
+  if(answered===N)finish();
+}
+
+function build(){
+  box.innerHTML='';answered=0;correct=0;upd();
+  document.getElementById('res').classList.remove('show');
+  Q.forEach(function(it,i){
+    var d=el('div','q');
+    d.appendChild(el('div','qn','Запитання '+(i+1)+' з '+N+' · '+TYPE[it.t]));
+    d.appendChild(el('div','qt',it.q));
+    var body=el('div','opts');d.appendChild(body);
+    var fb=el('div','fb');
+    if(it.t==='choice'){
+      var order=shuffle(it.o.map(function(_,k){return k}));
+      order.forEach(function(idx,pos){
+        var b=el('button','opt');b.type='button';
+        b.appendChild(el('span','l',L[pos]));b.appendChild(el('span','',it.o[idx]));
+        b.addEventListener('click',function(){
+          if(d.classList.contains('done'))return;
+          var ok=idx===it.a,all=body.querySelectorAll('.opt');
+          all.forEach(function(x,p){x.disabled=true;if(order[p]===it.a)x.classList.add('ok')});
+          if(!ok)b.classList.add('no');
+          finishQ(d,ok,it);
+        });
+        body.appendChild(b);
+      });
+    }
+    if(it.t==='tf'){
+      body.className='opts tf';
+      [[true,'Правда'],[false,'Неправда']].forEach(function(p){
+        var b=el('button','opt');b.type='button';b.appendChild(el('span','',p[1]));
+        b.addEventListener('click',function(){
+          if(d.classList.contains('done'))return;
+          var ok=p[0]===it.a,all=body.querySelectorAll('.opt');
+          all.forEach(function(x,k){x.disabled=true;if((k===0)===it.a)x.classList.add('ok')});
+          if(!ok)b.classList.add('no');
+          finishQ(d,ok,it);
+        });
+        body.appendChild(b);
+      });
+    }
+    if(it.t==='click'){
+      body.className='clickbox';
+      body.innerHTML=winSvg();
+      body.querySelectorAll('.rg').forEach(function(g){
+        function go(){
+          if(d.classList.contains('done'))return;
+          var ok=g.getAttribute('data-r')===it.r;
+          if(!ok)g.querySelector('.hit').classList.add('no');
+          body.querySelector('[data-r="'+it.r+'"] .hit').classList.add('ok');
+          finishQ(d,ok,it);
+        }
+        g.addEventListener('click',go);
+        g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+      });
+    }
+    if(it.t==='sort'){
+      body.className='sortbox';
+      var picks=[],rows=[];
+      var chk=el('button','btn','Перевірити');chk.type='button';chk.disabled=true;
+      it.items.forEach(function(row,k){
+        var r=el('div','srow');r.appendChild(el('div','stxt',row.s));
+        var bs=el('div','sbtns');
+        [['p','Перехід'],['a','Анімація']].forEach(function(v){
+          var b=el('button','mini',v[1]);b.type='button';
+          b.addEventListener('click',function(){
+            if(d.classList.contains('done'))return;
+            picks[k]=v[0];
+            bs.querySelectorAll('.mini').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');
+            chk.disabled=picks.filter(Boolean).length<it.items.length;
+          });
+          bs.appendChild(b);
+        });
+        r.appendChild(bs);body.appendChild(r);rows.push(r);
+      });
+      chk.addEventListener('click',function(){
+        if(d.classList.contains('done'))return;
+        var all=true;
+        it.items.forEach(function(row,k){
+          var good=picks[k]===row.a;if(!good)all=false;
+          rows[k].classList.add(good?'rok':'rno');
+          rows[k].querySelectorAll('.mini').forEach(function(x){x.disabled=true});
+        });
+        chk.disabled=true;
+        finishQ(d,all,it);
+      });
+      d.appendChild(body);d.appendChild(chk);d.appendChild(fb);box.appendChild(d);
+      return;
+    }
+    d.appendChild(fb);box.appendChild(d);
+  });
+}
+function upd(){
+  document.getElementById('pc').textContent=answered+' / '+N;
+  document.getElementById('pb').style.width=(answered/N*100)+'%';
+}
+function finish(){
+  var pts=9*correct/N,grade=1+pts;
+  var r=document.getElementById('res');r.classList.add('show');
+  document.getElementById('grade').textContent=fmt(grade);
+  document.getElementById('brk').textContent='1 бал дається автоматично. За відповіді: '+fmt(pts)+' з 9 (правильно '+correct+' з '+N+', кожне запитання — '+fmt(9/N)+' бала).';
+  document.getElementById('msg').textContent=grade>=9.5?'Відмінно! Ти добре засвоїв тему.':grade>=8?'Дуже добре! Лишилося повторити зовсім трохи.':grade>=6?'Добре! Перечитай частини, де були помилки.':grade>=5?'Задовільно. Варто ще раз прочитати матеріал.':'Прочитай матеріал ще раз і спробуй знову.';
+  setTimeout(function(){r.scrollIntoView({behavior:'smooth',block:'center'})},200);
+}
+document.getElementById('again').addEventListener('click',function(){build();window.scrollTo({top:document.querySelector('.quiz-head').offsetTop,behavior:'smooth'})});
+build();
+</script>
+</body>
+</html>
