@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orașul meu animat</title>
+<style>
+:root{--bg:#f3f5fb;--pn:#fff;--tx:#1d2340;--ac:#5b5bf0;--ac2:#ff7a45;--bd:#d6dbee;--mu:#5d6585;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12152a;--pn:#1d2240;--tx:#eef0ff;--bd:#343b66;--mu:#a2a9d0}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+header{display:flex;align-items:center;gap:10px;padding:6px 14px;background:var(--pn);border-bottom:2px solid var(--bd)}
+header h1{font-size:20px;margin:0;flex:1}
+main{flex:1;display:flex;min-height:0}
+aside{width:200px;background:var(--pn);padding:10px;overflow:auto;display:flex;flex-direction:column;gap:7px}
+#left{border-right:2px solid var(--bd)}
+#right{width:255px;border-left:2px solid var(--bd)}
+h2{font-size:13px;margin:6px 0 0;color:var(--mu);text-transform:uppercase;letter-spacing:.04em}
+button{font:inherit;font-weight:700;min-height:50px;border-radius:14px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);cursor:pointer;padding:4px 8px}
+button:active{transform:scale(.96)}
+button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+button.o{background:var(--ac2);border-color:var(--ac2);color:#fff}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.g2 button{font-size:14px}
+#view{flex:1;position:relative;min-width:0}
+#view canvas{display:block;width:100%;height:100%;touch-action:none}
+#hint{position:absolute;left:12px;top:10px;background:var(--pn);border:2px solid var(--bd);border-radius:12px;padding:7px 12px;font-size:15px;max-width:75%}
+.sw{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.sw button{min-height:40px;border-radius:50%;padding:0;aspect-ratio:1}
+.row{display:flex;align-items:center;gap:6px;font-size:14px}
+.row b{width:64px;font-size:13px}
+input[type=range]{flex:1;min-width:0;height:32px;accent-color:var(--ac)}
+footer{background:var(--pn);border-top:2px solid var(--bd);padding:8px 14px;display:flex;align-items:center;gap:12px}
+#tl{flex:1;position:relative;padding-top:18px}
+#tl input{width:100%}
+#marks{position:absolute;left:12px;right:12px;top:0;height:18px;pointer-events:none}
+#marks i{position:absolute;top:2px;width:12px;height:12px;margin-left:-6px;background:var(--ac2);transform:rotate(45deg);border-radius:3px}
+#tt{font-weight:800;font-size:18px;width:70px;text-align:center}
+#off{color:var(--mu);text-align:center;font-size:14px;padding:14px 6px}
+.how{font-size:13px;color:var(--mu);margin:2px;line-height:1.35}
+#act{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);display:none;flex-direction:column;gap:6px;background:var(--pn);border:2px solid var(--bd);border-radius:16px;padding:8px 10px;width:max-content;max-width:96%}.ar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}.ar button{min-height:44px;font-size:14px}.ar span{font-size:13px;color:var(--mu)}.ar b{font-size:15px}
+@media (max-width:860px){aside{width:150px}#right{width:200px}}
+</style>
+</head>
+<body>
+<header><h1>🏙️ Orașul meu animat</h1><button class="o" id="demo">▶ Exemplu gata făcut</button><button id="clear">🧹 Începe de la zero</button></header>
+<main>
+<aside id="left">
+<h2>1. Construiește</h2>
+<div id="pal"></div>
+</aside>
+<div id="view"><div id="hint">Alege din stânga ce vrei să pui, apoi atinge iarba.</div>
+<div id="act">
+<div class="ar"><b id="an">🎬</b><span>Cât de repede?</span><button data-s=".5">🐢 Încet</button><button data-s="1" class="p">🚶 Normal</button><button data-s="2">🏃 Repede</button></div>
+<div class="ar"><button class="o" id="path">📍 Alege pe unde merge</button><button data-a="jump">🦘 Sare</button><button data-a="spin">🔄 Se învârte</button><button data-a="wait">⏸ Așteaptă 2 s</button><button data-a="grow">📏 Crește</button><button data-a="small">🔹 Se micșorează</button><button id="noanim">✖ Șterge animația</button></div>
+</div></div>
+<aside id="right">
+<div id="off">Atinge un obiect de pe scenă ca să îl alegi. Poți să îl și tragi cu degetul!</div>
+<div id="props" style="display:none">
+<h2>Culoare</h2><div class="sw" id="sw"></div>
+<h2>Transformă</h2>
+<div class="row"><b>Rotire</b><input type="range" id="ry" min="-180" max="180" step="1"></div>
+<div class="row"><b>Mărime</b><input type="range" id="sc" min=".5" max="2.5" step=".05"></div>
+<div class="row"><b>Înălțime</b><input type="range" id="py" min="0" max="8" step=".1"></div>
+<div class="g2" style="margin-top:7px"><button id="r90">⟳ 90°</button><button id="dup">📋 Copie</button></div>
+<button id="del" style="margin-top:7px;width:100%">🗑️ Șterge</button>
+<div id="mv">
+
+
+
+<p class="how"><b>🎬 Animația:</b> alege din bara de jos ce face. Sau mută timpul pe linia de jos, trage personajul în alt loc și apare un romb ◆. Calculatorul face singur mișcarea dintre rombi!</p>
+</div>
+</div>
+</aside>
+</main>
+<footer>
+<button class="p" id="play" style="min-width:130px">▶ Pornește</button>
+<button id="stop">⏮</button>
+<div id="tl"><div id="marks"></div><input type="range" id="time" min="0" max="30" step="0.05" value="0"></div>
+<div id="tt">0.0 s</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const $=id=>document.getElementById(id),D=Math.PI/180,view=$('view');
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xa9d8ff);
+const cam=new THREE.PerspectiveCamera(50,1,.1,300);cam.position.set(0,19,17);
+const ren=new THREE.WebGLRenderer({antialias:true});ren.shadowMap.enabled=true;view.appendChild(ren.domElement);
+const ctl=new THREE.OrbitControls(cam,ren.domElement);ctl.maxPolarAngle=1.45;ctl.update();
+scene.add(new THREE.HemisphereLight(0xffffff,0x6b7a99,.8));
+const sun=new THREE.DirectionalLight(0xffffff,.75);sun.position.set(8,16,10);sun.castShadow=true;
+Object.assign(sun.shadow.camera,{left:-24,right:24,top:24,bottom:-24});sun.shadow.mapSize.set(1024,1024);scene.add(sun);
+const gr=new THREE.Mesh(new THREE.PlaneGeometry(80,80),new THREE.MeshStandardMaterial({color:0x7ccf6e}));
+gr.rotation.x=-Math.PI/2;gr.receiveShadow=true;scene.add(gr);
+scene.add(new THREE.GridHelper(40,20,0x68b85b,0x6cbf5f));
+const plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),ray=new THREE.Raycaster();
+function resize(){const w=view.clientWidth,h=view.clientHeight;ren.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix()}
+addEventListener('resize',resize);resize();
+
+/* ---------- piese ---------- */
+const M=c=>new THREE.MeshStandardMaterial({color:c,roughness:.7});
+const B=(w,h,d)=>new THREE.BoxGeometry(w,h,d),C=(r,h)=>new THREE.CylinderGeometry(r,r,h,20),S=r=>new THREE.SphereGeometry(r,20,14);
+const P=(g,m,x=0,y=0,z=0,sh=1)=>{const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.castShadow=!!sh;o.receiveShadow=true;return o};
+const G=()=>new THREE.Group();
+const limb=(g,x,y,z,w,h,d,m,ph,a)=>{const p=G();p.position.set(x,y,z);p.add(P(B(w,h,d),m,0,-h/2,0));g.add(p);return{p,ph,a}};
+const wheels=(g,xs,zs,r)=>xs.forEach(x=>zs.forEach(z=>{const w=P(C(r,.28),M(0x222222),x,r,z);w.rotation.z=Math.PI/2;g.add(w)}));
+function quad(m,hm,w){const g=G();g.add(P(B(.5*w,.5,.9),m,0,.6,0));g.add(P(B(.34,.34,.34),hm,0,.85,.55));g.add(P(B(.1,.1,.4),m,0,.75,-.6));
+ return{g,main:[m],limbs:[[-1,1,0],[1,1,Math.PI],[-1,-1,Math.PI],[1,-1,0]].map(([x,z,ph])=>limb(g,x*.17*w,.4,z*.3,.12,.4,.12,hm,ph,.6))}}
+const I={
+ road:{n:'🛣️ Drum',r:2,st:1,build(){const g=G();g.add(P(B(4,.06,4),M(0x3b3f4a),0,.03,0,0));[-1.2,1.2].forEach(x=>g.add(P(B(.9,.07,.14),M(0xffffff),x,.04,0,0)));return{g,main:[]}}},
+ cross:{n:'➕ Intersecție',r:2,st:1,build(){const g=G();g.add(P(B(4,.06,4),M(0x3b3f4a),0,.03,0,0));return{g,main:[]}}},
+ house:{n:'🏠 Casă',r:2.4,st:1,c:'#ffd166',build(m){const g=G();g.add(P(B(3,2,3),m,0,1,0));const r=P(new THREE.ConeGeometry(2.4,1.4,4),M(0xc0392b),0,2.7,0);r.rotation.y=Math.PI/4;g.add(r);
+  g.add(P(B(.6,1.1,.05),M(0x5b3a29),0,.55,1.51,0));[-1,1].forEach(x=>g.add(P(B(.6,.6,.05),M(0x9bd6ff),x*.9,1.2,1.51,0)));return{g,main:[m]}}},
+ block:{n:'🏢 Bloc',r:2,st:1,c:'#8ecae6',build(m){const g=G();g.add(P(B(2.6,6,2.6),m,0,3,0));
+  for(let i=0;i<5;i++)[-1,1].forEach(j=>g.add(P(B(.6,.7,.05),M(0x2a4a6b),j*.7,1+i*1.1,1.31,0)));return{g,main:[m]}}},
+ tree:{n:'🌳 Copac',r:1,st:1,c:'#3fa34d',build(m){const g=G();g.add(P(C(.2,1.4),M(0x7a4e2d),0,.7,0));g.add(P(S(1),m,0,2.1,0));g.add(P(S(.7),m,0,3,0));return{g,main:[m]}}},
+ car:{n:'🚗 Mașină',r:1.6,mv:1,sp:4,c:'#ef476f',build(m){const g=G();g.add(P(B(1.6,.5,3),m,0,.55,0));g.add(P(B(1.4,.5,1.5),M(0xdff3ff),0,1.05,-.2));
+  wheels(g,[-.85,.85],[-1,1],.35);[-.5,.5].forEach(x=>g.add(P(S(.12),M(0xfff3a0),x,.6,1.5,0)));return{g,main:[m]}}},
+ bus:{n:'🚌 Autobuz',r:2.4,mv:1,sp:3,c:'#ffd166',build(m){const g=G();g.add(P(B(1.9,1.6,5),m,0,1.1,0));g.add(P(B(1.95,.5,4.2),M(0x2a4a6b),0,1.5,0,0));wheels(g,[-.95,.95],[-1.6,1.6],.4);return{g,main:[m]}}},
+ person:{n:'🧍 Persoană',r:.9,mv:1,sp:1.6,s:.6,c:'#118ab2',build(m){const g=G(),sk=M(0xf1c27d),pt=M(0x2d3a5a);g.add(P(B(.55,.75,.32),m,0,1.25,0));g.add(P(S(.25),sk,0,1.82,0));
+  return{g,main:[m],limbs:[limb(g,-.14,.9,0,.2,.9,.22,pt,0,.7),limb(g,.14,.9,0,.2,.9,.22,pt,Math.PI,.7),limb(g,-.4,1.58,0,.16,.75,.18,m,Math.PI,.6),limb(g,.4,1.58,0,.16,.75,.18,m,0,.6)]}}},
+ dog:{n:'🐕 Câine',r:.8,mv:1,sp:2,s:.8,c:'#a9744f',build(m){return quad(m,M(0x6b4226),1)}},
+ cat:{n:'🐈 Pisică',r:.6,mv:1,sp:1.8,s:.55,c:'#ff9f45',build(m){return quad(m,M(0xffc27a),.8)}},
+ sheep:{n:'🐑 Oaie',r:.9,mv:1,sp:1.2,s:.8,c:'#f4f4f4',build(m){return quad(m,M(0x333333),1.4)}},
+ cloud:{n:'☁️ Nor',r:1.6,mv:1,sp:1.6,y:6,c:'#ffffff',build(m){const g=G();[[0,0,0,1],[-1,-.2,0,.7],[1,-.2,.1,.8]].forEach(([x,y,z,r])=>g.add(P(S(r),m,x,y,z)));return{g,main:[m]}}}
+};
+I.child={...I.person,n:'🧒 Copil',s:.42,c:'#ffd166',r:.6};
+Object.assign(I,{
+ zebra:{n:'🚸 Trecere',r:2,st:1,build(){const g=G();g.add(P(B(4,.06,4),M(0x3b3f4a),0,.03,0,0));for(let i=-2;i<=2;i++)g.add(P(B(1.6,.07,.35),M(0xffffff),0,.04,i*.7,0));return{g,main:[]}}},
+ water:{n:'🌊 Apă',r:2,st:1,build(){const g=G();g.add(P(B(4,.12,4),M(0x3aa0e8),0,.05,0,0));return{g,main:[]}}},
+ school:{n:'🏫 Școală',r:3,st:1,c:'#ffb4a2',build(m){const g=G();g.add(P(B(5,2.4,3),m,0,1.2,0));g.add(P(B(5.3,.3,3.3),M(0x7a4e2d),0,2.55,0));g.add(P(B(.9,1.3,.05),M(0x5b3a29),0,.65,1.51,0));[-2,-1.2,1.2,2].forEach(x=>g.add(P(B(.5,.6,.05),M(0x9bd6ff),x,1.4,1.51,0)));g.add(P(C(.04,1.4),M(0x888888),1.9,3.4,0));g.add(P(B(.6,.35,.03),M(0xef476f),2.2,3.9,0,0));return{g,main:[m]}}},
+ shop:{n:'🏪 Magazin',r:2,st:1,c:'#ffd6a5',build(m){const g=G();g.add(P(B(3,2,2.6),m,0,1,0));g.add(P(B(3.2,.15,1.1),M(0xe63946),0,1.7,1.8));g.add(P(B(2,.9,.05),M(0x9bd6ff),0,.9,1.31,0));return{g,main:[m]}}},
+ pine:{n:'🌲 Brad',r:1,c:'#2d8a4e',build(m){const g=G();g.add(P(C(.15,1),M(0x7a4e2d),0,.5,0));[[1,1.6,1.7],[.75,1.4,2.6],[.5,1.1,3.4]].forEach(([r,h,y])=>g.add(P(new THREE.ConeGeometry(r,h,10),m,0,y,0)));return{g,main:[m]}}},
+ rock:{n:'🪨 Stâncă',r:1,c:'#9aa0a6',build(m){const g=G(),r=P(S(.9),m,0,.5,0);r.scale.set(1,.7,.85);g.add(r);return{g,main:[m]}}},
+ lamp:{n:'💡 Felinar',r:.5,build(){const g=G();g.add(P(C(.06,3),M(0x555555),0,1.5,0));g.add(P(S(.22),M(0xfff3a0),0,3.1,0,0));return{g,main:[]}}},
+ light:{n:'🚦 Semafor',r:.5,build(){const g=G();g.add(P(C(.07,2.6),M(0x555555),0,1.3,0));g.add(P(B(.35,.9,.3),M(0x222222),0,2.7,0));[[0xff3b30,3],[0xffcc00,2.7],[0x34c759,2.4]].forEach(([c,y])=>g.add(P(S(.1),M(c),0,y,.17,0)));return{g,main:[]}}},
+ bench:{n:'🪑 Bancă',r:.9,c:'#a9744f',build(m){const g=G();g.add(P(B(1.4,.12,.45),m,0,.5,0));g.add(P(B(1.4,.45,.08),m,0,.8,-.2));[-.6,.6].forEach(x=>g.add(P(B(.1,.5,.4),M(0x444444),x,.25,0)));return{g,main:[m]}}},
+ truck:{n:'🚚 Camion',r:2.2,mv:1,sp:3.5,c:'#06d6a0',build(m){const g=G();g.add(P(B(1.8,1.1,1.1),m,0,.95,1.5));g.add(P(B(1.9,1.3,2.8),M(0xe5e5e5),0,1.05,-.4));wheels(g,[-.9,.9],[-1.2,0,1.6],.38);return{g,main:[m]}}},
+ plane:{n:'✈️ Avion',r:2.5,mv:1,sp:6,y:5,c:'#ffffff',build(m){const g=G(),f=P(C(.4,4),m,0,0,0);f.rotation.x=Math.PI/2;g.add(f);g.add(P(B(5,.1,1),M(0xcfd8dc),0,0,.3));g.add(P(B(.1,.8,.7),M(0xef476f),0,.5,-1.8));g.add(P(B(1.6,.1,.5),M(0xcfd8dc),0,.1,-1.8));return{g,main:[m]}}},
+ cow:{n:'🐄 Vacă',r:1.1,mv:1,sp:1,c:'#ffffff',build(m){return quad(m,M(0x222222),1.5)}},
+ horse:{n:'🐎 Cal',r:1.2,mv:1,sp:3,s:1.2,c:'#b5651d',build(m){return quad(m,M(0x5b3a29),1)}}
+});
+const CAT=[['Drumuri',['road','cross','zebra','water']],['Clădiri',['house','block','school','shop']],['Natură și dotări',['tree','pine','rock','lamp','light','bench']],['Vehicule',['car','bus','truck','plane']],['Personaje',['person','child','dog','cat','sheep','cow','horse']],['Cer',['cloud']]];
+const COLORS=['#ef476f','#ffd166','#06d6a0','#118ab2','#8338ec','#ff7a45','#ffffff','#444444'];
+let objs=[],sel=null,armed=null,pathOn=false,pts=[],dots=[],drag=null,dn=null,playing=false;
+const pal=$('pal');
+CAT.forEach(([t,ids])=>{const h=document.createElement('h2');h.textContent=t;pal.appendChild(h);const d=document.createElement('div');d.className='g2';
+ ids.forEach(id=>{const b=document.createElement('button');b.textContent=I[id].n;b.dataset.id=id;b.onclick=()=>arm(armed===id?null:id);d.appendChild(b)});pal.appendChild(d)});
+function arm(id){armed=id;if(id){select(null);$('hint').textContent='Atinge iarba ca să pui: '+I[id].n+'. Apasă din nou butonul ca să te oprești.'}
+ pal.querySelectorAll('button').forEach(b=>b.classList.toggle('p',b.dataset.id===id))}
+COLORS.forEach(c=>{const b=document.createElement('button');b.style.background=c;b.onclick=()=>{if(sel)sel.main.forEach(m=>m.color.set(c))};$('sw').appendChild(b)});
+
+const sn=(o,v)=>o.d.st?Math.round(v/2)*2:v;
+function addItem(id,x,z,ry){const d=I[id],m=M(d.c||'#ffffff'),b=d.build(m),g=G();b.g.scale.setScalar(d.s||1);g.add(b.g);scene.add(g);
+ const o={id,d,g,main:b.main,limbs:b.limbs||[],keys:[],ph:0,sp:0,last:new THREE.Vector3()};
+ g.position.set(sn(o,x),d.y||0,sn(o,z));g.rotation.y=ry||0;o.last.copy(g.position);objs.push(o);return o}
+const ring=new THREE.Mesh(new THREE.RingGeometry(1,1.12,40),new THREE.MeshBasicMaterial({color:0xff7a45,side:2}));
+ring.rotation.x=-Math.PI/2;ring.position.y=.09;ring.raycast=()=>{};
+function select(o){if(ring.parent)ring.parent.remove(ring);sel=o;
+ if(o){o.g.add(ring);ring.scale.setScalar(o.d.r)}
+ $('props').style.display=o?'block':'none';$('off').style.display=o?'none':'block';$('mv').style.display=o&&o.d.mv?'block':'none';$('act').style.display=o&&o.d.mv?'flex':'none';$('an').textContent=o?o.d.n:'';if(o&&o.d.mv&&!pathOn)$('hint').textContent='Spune-i ce să facă: apasă „Alege pe unde merge” sau o mișcare din bara de jos.';sync();marks()}
+function sync(){if(!sel)return;const g=sel.g,d=g.rotation.y/D;$('ry').value=((d+180)%360+360)%360-180;$('sc').value=g.scale.x;$('py').value=g.position.y}
+
+/* ---------- animatie ---------- */
+const T=()=>+$('time').value;
+const snap=o=>({t:T(),x:o.g.position.x,y:o.g.position.y,z:o.g.position.z,ry:o.g.rotation.y,s:o.g.scale.x});
+const wr=a=>Math.atan2(Math.sin(a),Math.cos(a));
+function addKey(o,k){o.keys=o.keys.filter(q=>Math.abs(q.t-k.t)>.04);const pr=[...o.keys].reverse().find(q=>q.t<k.t);if(pr)k.ry=pr.ry+wr(k.ry-pr.ry);o.keys.push(k);o.keys.sort((a,b)=>a.t-b.t)}
+function commit(o){if(!o||!o.d.mv)return;const k=snap(o);if(!o.keys.length&&k.t>.04&&o.pre)addKey(o,{...o.pre,t:0});addKey(o,k);marks()}
+function ev(o,t){const k=o.keys;if(!k.length)return;let a=k[0],b=a;
+ if(t>=k[k.length-1].t)a=b=k[k.length-1];else if(t>a.t)for(let i=0;i<k.length-1;i++)if(t>=k[i].t&&t<=k[i+1].t){a=k[i];b=k[i+1];break}
+ const f=b.t>a.t?(t-a.t)/(b.t-a.t):0,L=n=>a[n]+(b[n]-a[n])*f;
+ o.g.position.set(L('x'),L('y'),L('z'));o.g.rotation.y=L('ry');o.g.scale.setScalar(L('s'))}
+function apply(){objs.forEach(o=>ev(o,T()));sync();$('tt').textContent=T().toFixed(1)+' s'}
+function marks(){$('marks').innerHTML=sel?sel.keys.map(k=>`<i style="left:${k.t/30*100}%"></i>`).join(''):''}
+function genPath(o,p,t0){
+ const L=o.keys[o.keys.length-1],sp=(o.d.sp||1)*spd,y=L?L.y:o.g.position.y,s=L?L.s:o.g.scale.x;let ang=L?L.ry:o.g.rotation.y;t0=L?Math.max(t0,L.t):t0;
+ if(L&&t0>L.t+.04)o.keys.push({...L,t:t0});
+ if(!o.keys.length&&t0>.04)o.keys.push({t:0,x:p[0].x,y,z:p[0].z,ry:ang,s});
+ const f=p.find((q,i)=>i&&Math.hypot(q.x-p[0].x,q.z-p[0].z)>.05);if(f&&!L)ang+=wr(Math.atan2(f.x-p[0].x,f.z-p[0].z)-ang);
+ let t=t0;const K=(q,a)=>o.keys.push({t,x:q.x,y,z:q.z,ry:a,s});if(!L)K(p[0],ang);
+ for(let i=1;i<p.length;i++){const a0=p[i-1],b=p[i],dx=b.x-a0.x,dz=b.z-a0.z,len=Math.hypot(dx,dz);if(len<.05)continue;
+  const a=ang+wr(Math.atan2(dx,dz)-ang);if(Math.abs(a-ang)>.02){t+=.25;K(a0,a);ang=a}
+  t+=len/sp;K(b,a)}
+ o.keys.sort((a,b)=>a.t-b.t)}
+function setPlay(b){playing=b;$('play').textContent=b?'⏸ Pauză':'▶ Pornește'}
+$('play').onclick=()=>setPlay(!playing);
+$('stop').onclick=()=>{setPlay(false);$('time').value=0;apply()};
+$('time').addEventListener('pointerdown',()=>setPlay(false));$('time').oninput=apply;
+
+/* ---------- panou ---------- */
+['ry','sc','py'].forEach(k=>{const e=$(k);e.addEventListener('pointerdown',()=>{if(sel)sel.pre=snap(sel)});
+ e.oninput=()=>{if(!sel)return;sel.g.rotation.y=+$('ry').value*D;sel.g.scale.setScalar(+$('sc').value);sel.g.position.y=+$('py').value;commit(sel)}});
+$('r90').onclick=()=>{if(sel){sel.pre=snap(sel);sel.g.rotation.y+=Math.PI/2;commit(sel);sync()}};
+$('dup').onclick=()=>{if(!sel)return;const o=addItem(sel.id,sel.g.position.x+2,sel.g.position.z+2,sel.g.rotation.y);o.main.forEach((m,i)=>m.color.copy(sel.main[i].color));o.g.scale.copy(sel.g.scale);select(o)};
+$('del').onclick=()=>{if(!sel)return;const o=sel;select(null);scene.remove(o.g);objs=objs.filter(q=>q!==o)};
+$('noanim').onclick=()=>{if(sel){sel.keys=[];marks()}};
+function endPath(){pathOn=false;dots.forEach(d=>scene.remove(d));dots=[];$('path').textContent='📍 Alege pe unde merge';$('path').className='o'}
+$('path').onclick=()=>{if(!sel)return;
+ if(!pathOn){pathOn=true;{const L=sel.keys[sel.keys.length-1];pts=[L?new THREE.Vector3(L.x,0,L.z):sel.g.position.clone()]}setPlay(false);$('path').textContent='✔ Gata, pornește!';$('path').className='p';$('hint').textContent='Atinge pe iarbă, pe rând, locurile pe unde trece. Apoi apasă „Gata”.'}
+ else{if(pts.length>1){{const Lk=sel.keys[sel.keys.length-1];genPath(sel,pts,T());$('time').value=Lk?Lk.t:T();apply()}setPlay(true);$('hint').textContent='Uite-l cum merge! Apasă din nou „Alege pe unde merge” ca să continue mai departe.'}endPath();marks()}};
+function clr(){endPath();select(null);objs.forEach(o=>scene.remove(o.g));objs=[];$('time').value=0;apply()}
+$('clear').onclick=()=>{clr();setPlay(false);arm(null)};
+$('demo').onclick=()=>{setSpd(1);clr();arm(null);
+ [-8,-4,4,8].forEach(x=>addItem('road',x,0));addItem('cross',0,0);[-8,-4,4,8].forEach(z=>addItem('road',0,z,Math.PI/2));
+ addItem('house',-6,-6);addItem('house',6,-6);addItem('block',-6,6,Math.PI);addItem('house',6,6,Math.PI);
+ [[-10,-6],[10,6],[-4,-6],[10,-6],[-10,6]].forEach(([x,z])=>addItem('tree',x,z));
+ const W=(id,col,y,list)=>{const o=addItem(id,list[0][0],list[0][1]);if(col)o.main.forEach(m=>m.color.set(col));genPath(o,list.map(([x,z])=>({x,z})),0);return o};
+ W('car','#ef476f',0,[[-9,1],[9,1],[9,-1],[-9,-1]]);
+ W('person',0,0,[[-7,-3.2],[7,-3.2]]);W('dog',0,0,[[-8.5,-2.6],[7.5,-2.6]]);W('cloud',0,0,[[-10,-4],[10,-4]]);
+ $('time').value=0;apply();setPlay(true);$('hint').textContent='Exemplu: mașina, omul, câinele și norul sunt animați. Atinge unul ca să vezi rombii.'};
+
+let spd=1;
+function setSpd(v){spd=v;document.querySelectorAll('#act [data-s]').forEach(b=>b.classList.toggle('p',+b.dataset.s===v))}
+document.querySelectorAll('#act [data-s]').forEach(b=>b.onclick=()=>setSpd(+b.dataset.s));
+const ACT={jump:(a,L)=>{a(.4,{y:L.y+1.5});a(.8,{})},spin:(a,L)=>a(1.5,{ry:L.ry+Math.PI*2}),wait:a=>a(2,{}),grow:(a,L)=>a(1,{s:L.s*1.6}),small:(a,L)=>a(1,{s:L.s/1.6})};
+document.querySelectorAll('#act [data-a]').forEach(b=>b.onclick=()=>{const o=sel;if(!o||pathOn)return;
+ const L=o.keys[o.keys.length-1]||{...snap(o),t:T()};
+ if(!o.keys.length){if(L.t>.04)o.keys.push({...L,t:0});o.keys.push({...L})}
+ ACT[b.dataset.a]((dt,c)=>o.keys.push({...L,t:L.t+dt,...c}),L);
+ marks();$('time').value=L.t;apply();setPlay(true)});
+/* ---------- atingeri pe scenă ---------- */
+const gp=e=>{const r=ren.domElement.getBoundingClientRect();ray.setFromCamera(new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1),cam);return ray.ray.intersectPlane(plane,new THREE.Vector3())};
+view.addEventListener('pointerdown',e=>{if(e.target!==ren.domElement)return;dn=[e.clientX,e.clientY];const p=gp(e);if(armed||pathOn)return;
+ const h=ray.intersectObjects(objs.map(o=>o.g),true)[0];if(!h||!p)return;
+ let n=h.object;while(n&&!objs.some(o=>o.g===n))n=n.parent;const o=objs.find(q=>q.g===n);if(!o)return;
+ select(o);drag={o,off:new THREE.Vector3().subVectors(o.g.position,p),moved:0};o.pre=snap(o);ctl.enabled=false;setPlay(false)},true);
+addEventListener('pointermove',e=>{if(!drag)return;const p=gp(e);if(!p)return;const o=drag.o;
+ o.g.position.x=sn(o,p.x+drag.off.x);o.g.position.z=sn(o,p.z+drag.off.z);drag.moved=1});
+addEventListener('pointerup',e=>{
+ if(drag){ctl.enabled=true;if(drag.moved)commit(drag.o);drag=null;dn=null;return}
+ if(!dn)return;const tap=Math.hypot(e.clientX-dn[0],e.clientY-dn[1])<6;dn=null;if(!tap)return;
+ const p=gp(e);
+ if(pathOn&&p){pts.push(p.clone());const d=P(S(.25),M(0xff7a45),p.x,.3,p.z,0);scene.add(d);dots.push(d)}
+ else if(armed&&p){select(addItem(armed,p.x,p.z));arm(armed)}
+ else select(null)});
+
+/* ---------- bucla ---------- */
+let prev=performance.now();
+(function loop(now){requestAnimationFrame(loop);const dt=Math.min((now-prev)/1000,.05)||.016;prev=now;
+ if(playing){const end=Math.max(1,...objs.flatMap(o=>o.keys.map(k=>k.t)));let t=T()+dt;if(t>end)t=0;$('time').value=t;apply()}
+ objs.forEach(o=>{if(!o.limbs.length)return;const v=o.g.position.distanceTo(o.last)/dt;o.last.copy(o.g.position);
+  o.sp+=(Math.min(v,6)-o.sp)*.3;o.ph+=o.sp*dt*4;const k=Math.min(o.sp,1);o.limbs.forEach(l=>l.p.rotation.x=Math.sin(o.ph+l.ph)*l.a*k)});
+ ctl.update();ren.render(scene,cam)})(prev);
+</script>
+</body>
+</html>
